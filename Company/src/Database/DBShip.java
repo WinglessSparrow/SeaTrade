@@ -1,18 +1,24 @@
 package Database;
 
-import DTO.Ship;
+import DTO.Direction;
+import DTO.ShipDTO;
+
+import java.awt.*;
 
 public class DBShip {
-    public void update(Ship ship) {
+    public void update(ShipDTO ship) {
+    }
+
+    public void add(ShipDTO ship) {
 
     }
 
-    public void add(Ship ship) {
+    public void delete(String shipId) {
 
     }
 
-    public void delete(Ship ship) {
-
+    public ShipDTO get(String name) {
+        return new ShipDTO("Name", new Point(0, 0), Direction.DOWN, null, null);
     }
 
 }

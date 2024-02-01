@@ -1,6 +1,6 @@
 package DTO;
 
-import java.awt.geom.Point2D;
+import java.awt.*;
 
-public record Harbour(int id, String name, Point2D pos) {
+public record Harbour(int id, String name, Point pos) {
 }
