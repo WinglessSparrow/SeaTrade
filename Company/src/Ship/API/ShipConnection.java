@@ -3,8 +3,7 @@ package Ship.API;
 import DTO.ShipDTO;
 import Logger.Logger;
 import Ship.BusinessLogic.ShipController;
-import Ship.DTO.AnswerType;
-import Ship.DTO.ShipAnswerDTO;
+import Ship.DTO.CompanyResponseDTO;
 import Ship.DTO.ShipMessageDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,7 +34,7 @@ public class ShipConnection extends Thread implements Closeable {
 
     @Override
     public void run() {
-        while (!isInterrupted() || isDone) {
+        while (!isInterrupted() || !isDone) {
             try {
                 String json = reader.readLine();
 
@@ -45,35 +44,33 @@ public class ShipConnection extends Thread implements Closeable {
 
                 ShipDTO newShipState = null;
 
-                var answer = new ShipAnswerDTO(AnswerType.SUCCESS, null, null);
+                var answer = new CompanyResponseDTO(true, null, null);
 
                 switch (message.type()) {
-                    case UPDATE -> {
-                        newShipState = shipController.getShip(message.ship().name());
-                    }
-                    case MOVE -> {
-                        newShipState = shipController.moveShip(message.ship().name(), message.point(), message.cost());
-                    }
+                    case UPDATE -> newShipState = shipController.getShip(message.ship().name());
+
+                    case MOVE ->
+                            newShipState = shipController.moveShip(message.ship().name(), message.point(), message.cost());
+
                     case REMOVE -> {
                         shipController.removeShip(message.ship().name());
                         isDone = false;
                     }
-                    case ADD -> {
-                        newShipState = shipController.addNewShip(message.ship());
-                    }
-                    case LOAD -> {
-                        newShipState = shipController.registerCargoLoad(message.ship().name(), message.cargoId());
-                    }
-                    case UNLOAD -> {
-                        newShipState = shipController.registerCargoUnload(message.ship().name(), message.cost());
-                    }
+                    case ADD -> newShipState = shipController.addNewShip(message.ship());
+
+                    case LOAD ->
+                            newShipState = shipController.registerCargoLoad(message.ship().name(), message.cargoId());
+
+                    case UNLOAD ->
+                            newShipState = shipController.registerCargoUnload(message.ship().name(), message.cost());
+
                     default -> {
-                        answer = new ShipAnswerDTO(AnswerType.ERROR, null, "API doesn't know: " + message.type() + " please reconnect");
+                        answer = new CompanyResponseDTO(false, null, "API doesn't know: " + message.type() + " please reconnect");
                         isDone = true;
                     }
                 }
 
-                answer = new ShipAnswerDTO(answer, newShipState);
+                answer = new CompanyResponseDTO(answer, newShipState);
 
                 var answerString = parseAnswer(answer);
 
@@ -82,7 +79,8 @@ public class ShipConnection extends Thread implements Closeable {
                 Logger.log("I answered: " + answerString, this);
             } catch (IOException e) {
                 try {
-                    writer.println(parseAnswer(new ShipAnswerDTO(AnswerType.ERROR, null, "500 | unexpected error occurred")));
+                    writer.println(parseAnswer(new CompanyResponseDTO(false, null, "500 | unexpected error occurred | please reconnect")));
+                    isDone = true;
                 } catch (IOException ex) {
                     Logger.logErr(ex.toString(), this);
                 }
@@ -97,7 +95,7 @@ public class ShipConnection extends Thread implements Closeable {
         return mapper.readValue(jsonString, ShipMessageDTO.class);
     }
 
-    private String parseAnswer(ShipAnswerDTO answer) throws JsonProcessingException {
+    private String parseAnswer(CompanyResponseDTO answer) throws JsonProcessingException {
         var writer = new ObjectMapper().writer().withDefaultPrettyPrinter();
         return writer.writeValueAsString(answer);
     }

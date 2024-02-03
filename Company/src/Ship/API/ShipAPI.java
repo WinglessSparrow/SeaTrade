@@ -1,6 +1,5 @@
 package Ship.API;
 
-import DTO.ShipDTO;
 import Logger.Logger;
 import Ship.BusinessLogic.ShipController;
 
@@ -14,9 +13,9 @@ import java.util.List;
 
 public class ShipAPI extends Thread {
 
-    private ShipController controller;
+    private final ShipController controller;
 
-    private List<ShipConnection> connections = new ArrayList<>();
+    private final List<ShipConnection> connections = new ArrayList<>();
 
     private ServerSocket socket;
 

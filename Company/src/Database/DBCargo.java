@@ -1,10 +1,6 @@
 package Database;
 
 import DTO.Cargo;
-import DTO.Direction;
-import DTO.ShipDTO;
-
-import java.awt.*;
 
 public class DBCargo {
     public void update(Cargo cargo) {
