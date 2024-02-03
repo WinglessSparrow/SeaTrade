@@ -3,19 +3,14 @@ package Ship.API;
 import Logger.Logger;
 import Ship.BusinessLogic.ShipController;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ShipAPI extends Thread {
 
     private final ShipController controller;
-
-    private final List<ShipConnection> connections = new ArrayList<>();
 
     private ServerSocket socket;
 
@@ -37,7 +32,7 @@ public class ShipAPI extends Thread {
         while (!isInterrupted()) {
             try (var connection = socket.accept()) {
 
-                connections.add(new ShipConnection(connection, controller));
+                new ShipConnection(connection, controller).start();
 
                 Logger.log("New Ship connected", this);
             } catch (IOException e) {

@@ -10,14 +10,13 @@ import java.awt.*;
 
 public class ShipController {
 
-    private ShipAPI api;
-    private DB db;
+    private final ShipAPI api;
+    private final DB db;
 
 
     public ShipController(DB db) {
         this.api = new ShipAPI(this, 8080);
         this.db = db;
-
 
         Logger.log("Starting SHIP API", this);
 
@@ -28,8 +27,8 @@ public class ShipController {
         return db.getShip().get(shipId);
     }
 
-    public void removeShip(String shipId) {
-        db.getShip().delete(shipId);
+    public ShipDTO removeShip(String shipId) {
+        return db.getShip().delete(shipId);
     }
 
     public ShipDTO addNewShip(ShipDTO ship) {

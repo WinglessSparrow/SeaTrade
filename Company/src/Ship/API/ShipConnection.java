@@ -1,5 +1,6 @@
 package Ship.API;
 
+import DTO.CompanyDTO;
 import DTO.ShipDTO;
 import Logger.Logger;
 import Ship.BusinessLogic.ShipController;
@@ -38,39 +39,9 @@ public class ShipConnection extends Thread implements Closeable {
             try {
                 String json = reader.readLine();
 
-                Logger.log("a Ship send: " + json, this);
+                Logger.log("the Ship send: " + json, this);
 
-                var message = parseMessage(json);
-
-                ShipDTO newShipState = null;
-
-                var answer = new CompanyResponseDTO(true, null, null);
-
-                switch (message.type()) {
-                    case UPDATE -> newShipState = shipController.getShip(message.ship().name());
-
-                    case MOVE ->
-                            newShipState = shipController.moveShip(message.ship().name(), message.point(), message.cost());
-
-                    case REMOVE -> {
-                        shipController.removeShip(message.ship().name());
-                        isDone = false;
-                    }
-                    case ADD -> newShipState = shipController.addNewShip(message.ship());
-
-                    case LOAD ->
-                            newShipState = shipController.registerCargoLoad(message.ship().name(), message.cargoId());
-
-                    case UNLOAD ->
-                            newShipState = shipController.registerCargoUnload(message.ship().name(), message.cost());
-
-                    default -> {
-                        answer = new CompanyResponseDTO(false, null, "API doesn't know: " + message.type() + " please reconnect");
-                        isDone = true;
-                    }
-                }
-
-                answer = new CompanyResponseDTO(answer, newShipState);
+                CompanyResponseDTO answer = handleMessage(parseMessage(json));
 
                 var answerString = parseAnswer(answer);
 
@@ -88,6 +59,34 @@ public class ShipConnection extends Thread implements Closeable {
         }
 
         Logger.log("Ship removed, bye bye", this);
+
+        close();
+    }
+
+    @SuppressWarnings("ReassignedVariable")
+    private CompanyResponseDTO handleMessage(ShipMessageDTO message) {
+        ShipDTO newShipState = null;
+
+        switch (message.type()) {
+            case UPDATE -> newShipState = shipController.getShip(message.ship().name());
+
+            case MOVE -> newShipState = shipController.moveShip(message.ship().name(), message.point(), message.cost());
+
+            case REMOVE -> {
+                newShipState = shipController.removeShip(message.ship().name());
+                isDone = false;
+            }
+            case ADD -> newShipState = shipController.addNewShip(message.ship());
+
+            case LOAD -> newShipState = shipController.registerCargoLoad(message.ship().name(), message.cargoId());
+
+            case UNLOAD -> newShipState = shipController.registerCargoUnload(message.ship().name(), message.cost());
+
+            default -> isDone = true;
+        }
+
+        return (newShipState == null) ? new CompanyResponseDTO(false, null, "API doesn't know: " + message.type() + " please reconnect") : new CompanyResponseDTO(true, newShipState, null);
+
     }
 
     private ShipMessageDTO parseMessage(String jsonString) throws JsonProcessingException {
@@ -101,7 +100,12 @@ public class ShipConnection extends Thread implements Closeable {
     }
 
     @Override
-    public void close() throws IOException {
-        socket.close();
+    public void close() {
+        interrupt();
+        try {
+            socket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

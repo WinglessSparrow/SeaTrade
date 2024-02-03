@@ -13,8 +13,8 @@ public class DBShip {
 
     }
 
-    public void delete(String shipId) {
-
+    public ShipDTO delete(String shipId) {
+        return new ShipDTO("Name", new Point(0, 0), Direction.DOWN, null, null);
     }
 
     public ShipDTO get(String name) {
