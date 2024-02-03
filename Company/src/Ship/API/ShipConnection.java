@@ -1,6 +1,5 @@
 package Ship.API;
 
-import DTO.CompanyDTO;
 import DTO.ShipDTO;
 import Logger.Logger;
 import Ship.BusinessLogic.ShipController;

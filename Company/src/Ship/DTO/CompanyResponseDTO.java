@@ -7,7 +7,4 @@ public record CompanyResponseDTO(
         ShipDTO ship,
         String error
 ) {
-    public CompanyResponseDTO(CompanyResponseDTO answer, ShipDTO ship) {
-        this(answer.success, ship, answer.error);
-    }
 }

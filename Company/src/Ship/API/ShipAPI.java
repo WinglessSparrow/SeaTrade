@@ -5,8 +5,6 @@ import Ship.BusinessLogic.ShipController;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ShipAPI extends Thread {
 

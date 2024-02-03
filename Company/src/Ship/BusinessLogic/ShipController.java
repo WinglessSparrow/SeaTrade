@@ -1,5 +1,6 @@
 package Ship.BusinessLogic;
 
+import DTO.Cargo;
 import DTO.CompanyDTO;
 import Database.DB;
 import DTO.ShipDTO;
@@ -10,12 +11,11 @@ import java.awt.*;
 
 public class ShipController {
 
-    private final ShipAPI api;
     private final DB db;
 
 
     public ShipController(DB db) {
-        this.api = new ShipAPI(this, 8080);
+        ShipAPI api = new ShipAPI(this, 8080);
         this.db = db;
 
         Logger.log("Starting SHIP API", this);
@@ -45,9 +45,7 @@ public class ShipController {
 
         db.getShip().update(new ShipDTO(ship, point));
 
-        int newDeposit = company.deposit() - cost;
-
-        db.getCompany().update(new CompanyDTO(company, newDeposit));
+        db.getCompany().update(new CompanyDTO(company, company.deposit() - cost));
 
         db.commitTransaction();
 
@@ -55,18 +53,27 @@ public class ShipController {
     }
 
     public ShipDTO registerCargoLoad(String shipName, String cargoId) {
-        var currShip = db.getShip().get(shipName);
+        final var currShip = db.getShip().get(shipName);
         final var cargo = db.getCargo().get(cargoId);
 
-        final var newCargoShip = new ShipDTO(currShip, cargo);
+        db.getShip().update(new ShipDTO(currShip, cargo));
 
-        currShip = db.getShip().get(shipName);
-
-        return currShip;
+        return db.getShip().get(shipName);
     }
 
     public ShipDTO registerCargoUnload(String shipName, int profit) {
-        return db.getShip().get("");
+        final var currShip = db.getShip().get(shipName);
+        final var company = db.getCompany().get();
+
+        db.startTransaction();
+
+        db.getShip().update(new ShipDTO(currShip, (Cargo) null));
+        db.getCompany().update(new CompanyDTO(company, company.deposit() + profit));
+
+        db.commitTransaction();
+
+
+        return db.getShip().get(shipName);
     }
 
 }
