@@ -45,13 +45,4 @@ public class ShipAPI extends Thread {
             }
         }
     }
-
-    public void parse(Socket socket) {
-        try (var reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));) {
-            String json = reader.readLine();
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

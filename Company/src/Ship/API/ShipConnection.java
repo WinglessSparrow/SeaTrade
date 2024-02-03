@@ -13,11 +13,11 @@ import java.net.Socket;
 
 public class ShipConnection extends Thread implements Closeable {
 
-    private Socket socket;
-    private BufferedReader reader;
-    private PrintWriter writer;
+    private final Socket socket;
+    private final BufferedReader reader;
+    private final PrintWriter writer;
+    private final ShipController shipController;
     private boolean isDone = false;
-    private ShipController shipController;
 
 
     public ShipConnection(Socket socket, ShipController shipController) {
