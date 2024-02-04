@@ -28,8 +28,9 @@ public class ShipAPI extends Thread {
     @Override
     public void run() {
         while (!isInterrupted()) {
-            try (var connection = socket.accept()) {
-
+            try {
+                var connection = socket.accept();
+                
                 new ShipConnection(connection, controller).start();
 
                 Logger.log("New Ship connected", this);

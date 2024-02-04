@@ -34,7 +34,7 @@ public class ShipConnection extends Thread implements Closeable {
 
     @Override
     public void run() {
-        while (!isInterrupted() || !isDone) {
+        while (!isInterrupted() && !isDone) {
             try {
                 String json = reader.readLine();
 
@@ -48,11 +48,16 @@ public class ShipConnection extends Thread implements Closeable {
 
                 Logger.log("I answered: " + answerString, this);
             } catch (IOException e) {
-                try {
-                    writer.println(parseAnswer(new CompanyResponseDTO(false, null, "500 | unexpected error occurred | please reconnect")));
-                    isDone = true;
-                } catch (IOException ex) {
-                    Logger.logErr(ex.toString(), this);
+                isDone = true;
+
+                Logger.logErr(e.toString(), this);
+
+                if (e.toString().contains("socket is closed")) {
+                    try {
+                        writer.println(parseAnswer(new CompanyResponseDTO(false, null, "500 | unexpected error occurred | please reconnect")));
+                    } catch (IOException ex) {
+                        Logger.logErr(ex.toString(), this);
+                    }
                 }
             }
         }
@@ -81,7 +86,10 @@ public class ShipConnection extends Thread implements Closeable {
 
             case UNLOAD -> newShipState = shipController.registerCargoUnload(message.ship().name(), message.cost());
 
-            default -> isDone = true;
+            default -> {
+                isDone = true;
+                Logger.logErr("Unknown command received", this);
+            }
         }
 
         return (newShipState == null) ? new CompanyResponseDTO(false, null, "API doesn't know: " + message.type() + " please reconnect") : new CompanyResponseDTO(true, newShipState, null);
@@ -94,8 +102,7 @@ public class ShipConnection extends Thread implements Closeable {
     }
 
     private String parseAnswer(CompanyResponseDTO answer) throws JsonProcessingException {
-        var writer = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        return writer.writeValueAsString(answer);
+        return new ObjectMapper().writeValueAsString(answer);
     }
 
     @Override
