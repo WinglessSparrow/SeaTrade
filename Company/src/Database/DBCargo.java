@@ -1,13 +1,13 @@
 package Database;
 
-import DTO.Cargo;
+import DTO.CargoDTO;
 
 public class DBCargo {
-    public void update(Cargo cargo) {
+    public void update(CargoDTO cargo) {
 
     }
 
-    public void add(Cargo cargo) {
+    public void add(CargoDTO cargo) {
 
     }
 
@@ -15,7 +15,7 @@ public class DBCargo {
 
     }
 
-    public Cargo get(String cargoId) {
-        return new Cargo(null, null, "", 1);
+    public CargoDTO get(String cargoId) {
+        return new CargoDTO(null, null, "", 1);
     }
 }

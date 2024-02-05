@@ -1,6 +1,6 @@
 package Ship.BusinessLogic;
 
-import DTO.Cargo;
+import DTO.CargoDTO;
 import DTO.CompanyDTO;
 import Database.DB;
 import DTO.ShipDTO;
@@ -27,12 +27,15 @@ public class ShipController {
         return db.getShip().get(shipId);
     }
 
-    public ShipDTO removeShip(String shipId) {
+    public synchronized ShipDTO removeShip(String shipId) {
         return db.getShip().delete(shipId);
     }
 
     public ShipDTO addNewShip(ShipDTO ship) {
-        db.getShip().add(ship);
+
+        synchronized (new Object()) {
+            db.getShip().add(ship);
+        }
 
         return db.getShip().get(ship.name());
     }
@@ -41,13 +44,15 @@ public class ShipController {
         final var company = db.getCompany().get();
         final var ship = db.getShip().get(shipName);
 
-        db.startTransaction();
+        synchronized (new Object()) {
+            db.startTransaction();
 
-        db.getShip().update(new ShipDTO(ship, point));
+            db.getShip().update(new ShipDTO(ship, point));
 
-        db.getCompany().update(new CompanyDTO(company, company.deposit() - cost));
+            db.getCompany().update(new CompanyDTO(company, company.deposit() - cost));
 
-        db.commitTransaction();
+            db.commitTransaction();
+        }
 
         return db.getShip().get(shipName);
     }
@@ -56,7 +61,9 @@ public class ShipController {
         final var currShip = db.getShip().get(shipName);
         final var cargo = db.getCargo().get(cargoId);
 
-        db.getShip().update(new ShipDTO(currShip, cargo));
+        synchronized (new Object()) {
+            db.getShip().update(new ShipDTO(currShip, cargo));
+        }
 
         return db.getShip().get(shipName);
     }
@@ -65,13 +72,14 @@ public class ShipController {
         final var currShip = db.getShip().get(shipName);
         final var company = db.getCompany().get();
 
-        db.startTransaction();
+        synchronized (new Object()) {
+            db.startTransaction();
 
-        db.getShip().update(new ShipDTO(currShip, (Cargo) null));
-        db.getCompany().update(new CompanyDTO(company, company.deposit() + profit));
+            db.getShip().update(new ShipDTO(currShip, (CargoDTO) null));
+            db.getCompany().update(new CompanyDTO(company, company.deposit() + profit));
 
-        db.commitTransaction();
-
+            db.commitTransaction();
+        }
 
         return db.getShip().get(shipName);
     }
