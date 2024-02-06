@@ -30,7 +30,7 @@ public class ShipAPI extends Thread {
         while (!isInterrupted()) {
             try {
                 var connection = socket.accept();
-                
+
                 new ShipConnection(connection, controller).start();
 
                 Logger.log("New Ship connected", this);

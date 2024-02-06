@@ -13,7 +13,6 @@ public class ShipController {
 
     private final DB db;
 
-
     public ShipController(DB db) {
         ShipAPI api = new ShipAPI(this, 8080);
         this.db = db;

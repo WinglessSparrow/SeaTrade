@@ -6,7 +6,7 @@ public record ShipDTO(
         String name,
         Point pos,
         Direction dir,
-        DTO harbour,
+        HarbourDTO harbour,
         CargoDTO heldCargo
 ) {
     public ShipDTO(ShipDTO ship, Point newPos) {

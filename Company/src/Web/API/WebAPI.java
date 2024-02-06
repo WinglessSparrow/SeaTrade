@@ -2,15 +2,9 @@ package Web.API;
 
 import Logger.Logger;
 import Web.Controller.WebController;
-import Web.DTO.DBDump;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.Closeable;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
-import java.net.Socket;
 
 public class WebAPI extends Thread {
 
