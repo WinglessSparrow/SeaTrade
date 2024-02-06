@@ -2,6 +2,8 @@ package Database;
 
 import DTO.CompanyDTO;
 
+import java.awt.*;
+
 public class DBCompany {
     public void update(CompanyDTO ship) {
     }
@@ -15,6 +17,6 @@ public class DBCompany {
     }
 
     public CompanyDTO get() {
-        return new CompanyDTO("MockCompany", 0, 0, 0);
+        return new CompanyDTO("MockCompany", 0, new Dimension(0, 0), 0);
     }
 }
