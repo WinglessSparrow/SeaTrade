@@ -16,6 +16,6 @@ public class DBCargo {
     }
 
     public CargoDTO get(String cargoId) {
-        return new CargoDTO(null, null, "", 1);
+        return new CargoDTO(null, null, 0, 1);
     }
 }
