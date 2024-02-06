@@ -11,6 +11,10 @@ public class DBCargo {
 
     }
 
+    public void addBulk(CargoDTO[] cargos) {
+
+    }
+
     public void delete(String cargoId) {
 
     }

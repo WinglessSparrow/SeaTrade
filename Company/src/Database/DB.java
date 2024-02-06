@@ -4,10 +4,11 @@ import java.sql.SQLException;
 
 public class DB {
 
-    private DBShip ship = new DBShip();
-    private DBCargo cargo = new DBCargo();
-    private DBCompany company = new DBCompany();
-    private DBGetter getter = new DBGetter();
+    private final DBShip ship = new DBShip();
+    private final DBCargo cargo = new DBCargo();
+    private final DBCompany company = new DBCompany();
+    private final DBGetter getter = new DBGetter();
+    private final DBHarbour harbour = new DBHarbour();
 
     public void clearDB() {
 
@@ -48,5 +49,9 @@ public class DB {
 
     public DBGetter getGetter() {
         return getter;
+    }
+
+    public DBHarbour getHarbour() {
+        return harbour;
     }
 }

@@ -11,27 +11,37 @@ public class SeaTradeController {
 
     private final String companyName;
 
+    private final SeaTradeAPI api;
+
     public SeaTradeController(DB db, String companyName) {
         this.db = db;
         this.companyName = companyName;
 
-//        new SeaTradeAPI(this).start();
+        api = new SeaTradeAPI(this, "localhost", 8081);
     }
 
-    public void addNewCargo(CargoDTO cargo) {
+    public void init() {
+        api.start();
 
+        api.register(companyName);
+        api.getCargos();
+        api.getHarbours();
     }
 
-    public void setCargos(CargoDTO[] cargos) {
-
+    public synchronized void addNewCargo(CargoDTO cargo) {
+        db.getCargo().add(cargo);
     }
 
-    public void setHarbours(HarbourDTO[] harbours) {
-
+    public synchronized void setCargos(CargoDTO[] cargos) {
+        db.getCargo().addBulk(cargos);
     }
 
-    public void setCompany(CompanyDTO company) {
+    public synchronized void setHarbours(HarbourDTO[] harbours) {
+        db.getHarbour().addBulk(harbours);
+    }
 
+    public synchronized void setCompany(CompanyDTO company) {
+        db.getCompany().add(company);
     }
 
     public String getCompanyName() {
