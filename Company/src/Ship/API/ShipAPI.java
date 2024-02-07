@@ -3,10 +3,11 @@ package Ship.API;
 import Logger.Logger;
 import Ship.BusinessLogic.ShipController;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.net.ServerSocket;
 
-public class ShipAPI extends Thread {
+public class ShipAPI extends Thread implements Closeable {
 
     private final ShipController controller;
 
@@ -38,5 +39,10 @@ public class ShipAPI extends Thread {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    @Override
+    public void close() throws IOException {
+        socket.close();
     }
 }

@@ -8,14 +8,18 @@ import Logger.Logger;
 import Ship.API.ShipAPI;
 
 import java.awt.*;
+import java.io.Closeable;
+import java.io.IOException;
 
-public class ShipController {
+public class ShipController implements Closeable {
 
     private final DB db;
+    private final ShipAPI api;
 
-    public ShipController(DB db) {
-        ShipAPI api = new ShipAPI(this, 8080);
+    public ShipController(DB db, int port) {
         this.db = db;
+
+        api = new ShipAPI(this, port);
 
         Logger.log("Starting SHIP API", this);
 
@@ -83,4 +87,8 @@ public class ShipController {
         return db.getShip().get(shipName);
     }
 
+    @Override
+    public void close() throws IOException {
+        api.close();
+    }
 }

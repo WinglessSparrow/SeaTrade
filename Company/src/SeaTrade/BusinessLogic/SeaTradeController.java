@@ -6,18 +6,21 @@ import DTO.HarbourDTO;
 import Database.DB;
 import SeaTrade.API.SeaTradeAPI;
 
-public class SeaTradeController {
+import java.io.Closeable;
+import java.io.IOException;
+
+public class SeaTradeController implements Closeable {
     private final DB db;
 
     private final String companyName;
 
     private final SeaTradeAPI api;
 
-    public SeaTradeController(DB db, String companyName) {
+    public SeaTradeController(DB db, String companyName, int port) {
         this.db = db;
         this.companyName = companyName;
 
-        api = new SeaTradeAPI(this, "localhost", 8081);
+        api = new SeaTradeAPI(this, "localhost", port);
     }
 
     public void init() {
@@ -46,5 +49,10 @@ public class SeaTradeController {
 
     public String getCompanyName() {
         return companyName;
+    }
+
+    @Override
+    public void close() throws IOException {
+        api.close();
     }
 }
