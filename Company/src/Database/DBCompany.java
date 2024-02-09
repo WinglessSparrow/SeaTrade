@@ -1,22 +1,22 @@
 package Database;
 
-import DTO.CompanyDTO;
+import Types.Company;
 
 import java.awt.*;
 
 public class DBCompany {
-    public void update(CompanyDTO ship) {
+    public void update(Company ship) {
     }
 
-    public void add(CompanyDTO ship) {
-
-    }
-
-    public void delete(CompanyDTO ship) {
+    public void add(Company ship) {
 
     }
 
-    public CompanyDTO get() {
-        return new CompanyDTO("MockCompany", 0, new Dimension(0, 0), 0);
+    public void delete(Company ship) {
+
+    }
+
+    public Company get() {
+        return new Company("MockCompany", 0, new Dimension(0, 0), 0);
     }
 }

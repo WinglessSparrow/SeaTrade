@@ -1,10 +1,10 @@
 package Ship.DTO;
 
-import DTO.ShipDTO;
+import Types.Ship;
 
 public record CompanyResponseDTO(
         boolean success,
-        ShipDTO ship,
+        Ship ship,
         String error
 ) {
 }

@@ -1,8 +1,5 @@
 package SeaTrade.API;
 
-import DTO.CargoDTO;
-import DTO.CompanyDTO;
-import DTO.HarbourDTO;
 import Logger.Logger;
 import SeaTrade.BusinessLogic.SeaTradeController;
 import SeaTrade.DTO.Parsers.CargoParser;
@@ -15,7 +12,6 @@ import SeaTrade.DTO.Response.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 

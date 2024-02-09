@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link href="https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h2>Hi SeaTrade</h2>
+        <button onclick="getData()">get</button>
+        <div class="grid">
+            <div id="ship-table"></div>
+            <div id="cargo-table"></div>
+            <div id="harbour-table"></div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script>
+        <script>
+
+            new gridjs.Grid({
+            columns: ["Name", "Pos X", "Pos Y", "Direction", "Current harbour", "Held cargo"],
+            data: []}).render(document.getElementById("ship-table"));
+
+            new gridjs.Grid({
+            columns: ["ID", "Source", "Destination"],
+            data: []}).render(document.getElementById("cargo-table"));
+
+            new gridjs.Grid({
+            columns: ["ID", "Name", "Pos X", "Pos Y"],
+            data: []}).render(document.getElementById("harbour-table"));
+
+            async function getData() {
+                const resp = await fetch('http://localhost:9000/data');
+
+                console.log(await resp.json());
+            }
+        </script>
+    </body>
+</html>

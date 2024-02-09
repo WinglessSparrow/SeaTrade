@@ -1,9 +1,9 @@
 package Database;
 
-import DTO.HarbourDTO;
+import Types.Harbour;
 
 public class DBHarbour {
-    public void addBulk(HarbourDTO[] harbours) {
+    public void addBulk(Harbour[] harbours) {
 
     }
 }

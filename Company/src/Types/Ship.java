@@ -1,19 +1,19 @@
-package DTO;
+package Types;
 
 import java.awt.*;
 
-public record ShipDTO(
+public record Ship(
         String name,
         Point pos,
         Direction dir,
-        HarbourDTO harbour,
-        CargoDTO heldCargo
+        Harbour harbour,
+        Cargo heldCargo
 ) {
-    public ShipDTO(ShipDTO ship, Point newPos) {
+    public Ship(Ship ship, Point newPos) {
         this(ship.name, newPos, ship.dir, ship.harbour, ship.heldCargo);
     }
 
-    public ShipDTO(ShipDTO ship, CargoDTO cargo) {
+    public Ship(Ship ship, Cargo cargo) {
         this(ship.name, ship.pos, ship.dir, ship.harbour, cargo);
     }
 }

@@ -1,6 +1,6 @@
 package Database;
 
-import Web.DTO.DBDump;
+import Types.DBDump;
 
 public class DBGetter {
     public DBDump dumpDB() {

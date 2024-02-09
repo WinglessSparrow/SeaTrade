@@ -1,7 +1,7 @@
 package Web.Controller;
 
 import Database.DB;
-import Web.DTO.DBDump;
+import Types.DBDump;
 
 public class WebController {
 
@@ -11,7 +11,7 @@ public class WebController {
         this.db = db;
     }
 
-    public DBDump dumbDBData() {
+    public DBDump dumpDBData() {
         return db.getGetter().dumpDB();
     }
 }

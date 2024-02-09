@@ -1,17 +1,17 @@
 package Database;
 
-import DTO.CargoDTO;
+import Types.Cargo;
 
 public class DBCargo {
-    public void update(CargoDTO cargo) {
+    public void update(Cargo cargo) {
 
     }
 
-    public void add(CargoDTO cargo) {
+    public void add(Cargo cargo) {
 
     }
 
-    public void addBulk(CargoDTO[] cargos) {
+    public void addBulk(Cargo[] cargos) {
 
     }
 
@@ -19,7 +19,7 @@ public class DBCargo {
 
     }
 
-    public CargoDTO get(String cargoId) {
-        return new CargoDTO(null, null, 0, 1);
+    public Cargo get(String cargoId) {
+        return new Cargo(null, null, 0, 1);
     }
 }

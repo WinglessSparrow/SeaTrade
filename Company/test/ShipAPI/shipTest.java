@@ -1,7 +1,7 @@
 package ShipAPI;
 
-import DTO.Direction;
-import DTO.ShipDTO;
+import Types.Direction;
+import Types.Ship;
 import Ship.DTO.ShipMessageDTO;
 import Ship.DTO.ShipMessageType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +25,7 @@ public class shipTest {
             BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
             PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
 
-            var s = new ShipDTO("titanic", new Point(0, 0), Direction.DOWN, null, null);
+            var s = new Ship("titanic", new Point(0, 0), Direction.DOWN, null, null);
 
             var f = new ShipMessageDTO(ShipMessageType.ADD, null, null, null, s);
 

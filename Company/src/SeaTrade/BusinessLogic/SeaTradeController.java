@@ -1,8 +1,8 @@
 package SeaTrade.BusinessLogic;
 
-import DTO.CargoDTO;
-import DTO.CompanyDTO;
-import DTO.HarbourDTO;
+import Types.Cargo;
+import Types.Company;
+import Types.Harbour;
 import Database.DB;
 import SeaTrade.API.SeaTradeAPI;
 
@@ -31,19 +31,19 @@ public class SeaTradeController implements Closeable {
         api.getHarbours();
     }
 
-    public synchronized void addNewCargo(CargoDTO cargo) {
+    public synchronized void addNewCargo(Cargo cargo) {
         db.getCargo().add(cargo);
     }
 
-    public synchronized void setCargos(CargoDTO[] cargos) {
+    public synchronized void setCargos(Cargo[] cargos) {
         db.getCargo().addBulk(cargos);
     }
 
-    public synchronized void setHarbours(HarbourDTO[] harbours) {
+    public synchronized void setHarbours(Harbour[] harbours) {
         db.getHarbour().addBulk(harbours);
     }
 
-    public synchronized void setCompany(CompanyDTO company) {
+    public synchronized void setCompany(Company company) {
         db.getCompany().add(company);
     }
 

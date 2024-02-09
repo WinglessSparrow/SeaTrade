@@ -1,6 +1,6 @@
 package Ship.DTO;
 
-import DTO.ShipDTO;
+import Types.Ship;
 
 import java.awt.*;
 
@@ -9,6 +9,6 @@ public record ShipMessageDTO(
         String cargoId,
         Integer cost,
         Point point,
-        ShipDTO ship
+        Ship ship
 ) {
 }

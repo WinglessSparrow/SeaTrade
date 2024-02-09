@@ -1,6 +1,6 @@
 package Ship.API;
 
-import DTO.ShipDTO;
+import Types.Ship;
 import Logger.Logger;
 import Ship.BusinessLogic.ShipController;
 import Ship.DTO.CompanyResponseDTO;
@@ -69,7 +69,7 @@ public class ShipConnection extends Thread implements Closeable {
 
     @SuppressWarnings("ReassignedVariable")
     private CompanyResponseDTO handleMessage(ShipMessageDTO message) {
-        ShipDTO newShipState = null;
+        Ship newShipState = null;
 
         switch (message.type()) {
             case UPDATE -> newShipState = shipController.getShip(message.ship().name());

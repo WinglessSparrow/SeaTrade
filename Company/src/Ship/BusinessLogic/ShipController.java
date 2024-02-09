@@ -1,9 +1,9 @@
 package Ship.BusinessLogic;
 
-import DTO.CargoDTO;
-import DTO.CompanyDTO;
+import Types.Cargo;
+import Types.Company;
 import Database.DB;
-import DTO.ShipDTO;
+import Types.Ship;
 import Logger.Logger;
 import Ship.API.ShipAPI;
 
@@ -26,15 +26,15 @@ public class ShipController implements Closeable {
         api.start();
     }
 
-    public ShipDTO getShip(String shipId) {
+    public Ship getShip(String shipId) {
         return db.getShip().get(shipId);
     }
 
-    public synchronized ShipDTO removeShip(String shipId) {
+    public synchronized Ship removeShip(String shipId) {
         return db.getShip().delete(shipId);
     }
 
-    public ShipDTO addNewShip(ShipDTO ship) {
+    public Ship addNewShip(Ship ship) {
 
         synchronized (new Object()) {
             db.getShip().add(ship);
@@ -43,16 +43,16 @@ public class ShipController implements Closeable {
         return db.getShip().get(ship.name());
     }
 
-    public ShipDTO moveShip(String shipName, Point point, int cost) {
+    public Ship moveShip(String shipName, Point point, int cost) {
         final var company = db.getCompany().get();
         final var ship = db.getShip().get(shipName);
 
         synchronized (new Object()) {
             db.startTransaction();
 
-            db.getShip().update(new ShipDTO(ship, point));
+            db.getShip().update(new Ship(ship, point));
 
-            db.getCompany().update(new CompanyDTO(company, company.deposit() - cost));
+            db.getCompany().update(new Company(company, company.deposit() - cost));
 
             db.commitTransaction();
         }
@@ -60,26 +60,26 @@ public class ShipController implements Closeable {
         return db.getShip().get(shipName);
     }
 
-    public ShipDTO registerCargoLoad(String shipName, String cargoId) {
+    public Ship registerCargoLoad(String shipName, String cargoId) {
         final var currShip = db.getShip().get(shipName);
         final var cargo = db.getCargo().get(cargoId);
 
         synchronized (new Object()) {
-            db.getShip().update(new ShipDTO(currShip, cargo));
+            db.getShip().update(new Ship(currShip, cargo));
         }
 
         return db.getShip().get(shipName);
     }
 
-    public ShipDTO registerCargoUnload(String shipName, int profit) {
+    public Ship registerCargoUnload(String shipName, int profit) {
         final var currShip = db.getShip().get(shipName);
         final var company = db.getCompany().get();
 
         synchronized (new Object()) {
             db.startTransaction();
 
-            db.getShip().update(new ShipDTO(currShip, (CargoDTO) null));
-            db.getCompany().update(new CompanyDTO(company, company.deposit() + profit));
+            db.getShip().update(new Ship(currShip, (Cargo) null));
+            db.getCompany().update(new Company(company, company.deposit() + profit));
 
             db.commitTransaction();
         }
