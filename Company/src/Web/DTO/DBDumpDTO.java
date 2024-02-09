@@ -19,23 +19,23 @@ public class DBDumpDTO {
 
         this.cargosData = dump.cargos() != null ? new String[dump.cargos().length][] : new String[0][];
         if (dump.cargos() != null) {
-            Arrays.stream(dump.cargos()).forEach(withCounter((idx, cargo) -> {
-                this.cargosData[idx] = cargoToArray(cargo);
-            }));
+            for (int i = 0; i < dump.cargos().length; i++) {
+                this.cargosData[i] = cargoToArray(dump.cargos()[i]);
+            }
         }
 
         this.shipsData = dump.ships() != null ? new String[dump.ships().length][] : new String[0][];
         if (dump.ships() != null) {
-            Arrays.stream(dump.ships()).forEach(withCounter((idx, ship) -> {
-                this.cargosData[idx] = shipToArray(ship);
-            }));
+            for (int i = 0; i < dump.ships().length; i++) {
+                this.shipsData[i] = shipToArray(dump.ships()[i]);
+            }
         }
 
         this.harboursData = dump.harbour() != null ? new String[dump.harbour().length][] : new String[0][];
         if (dump.harbour() != null) {
-            Arrays.stream(dump.harbour()).forEach(withCounter((idx, harbour) -> {
-                this.harboursData[idx] = harbourToArray(harbour);
-            }));
+            for (int i = 0; i < dump.harbour().length; i++) {
+                this.harboursData[i] = harbourToArray(dump.harbour()[i]);
+            }
         }
     }
 
@@ -49,11 +49,6 @@ public class DBDumpDTO {
 
     private String[] harbourToArray(Harbour harbour) {
         return new String[]{harbour.id() + "", harbour.name(), harbour.pos().x + "", harbour.pos().y + ""};
-    }
-
-    public static <T> Consumer<T> withCounter(BiConsumer<Integer, T> consumer) {
-        AtomicInteger counter = new AtomicInteger(0);
-        return item -> consumer.accept(counter.getAndIncrement(), item);
     }
 
     public Company getCompany() {

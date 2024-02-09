@@ -5,34 +5,123 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Document</title>
         <link href="https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+        <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Questrial">
+        <style>
+            body {
+                font-family: 'Questrial', serif;
+            }
+        </style>
     </head>
     <body>
-        <h2>Hi SeaTrade</h2>
-        <button onclick="getData()">get</button>
+        <style>
+
+            /* #79aeb2 #79aeb2 #ebfeff #d6fcff #d6fcff*/
+            body {
+                background-color: #79aeb2;
+            }
+
+            .grid{
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: 50px 1fr 1fr;
+
+                gap: 1rem;
+
+                margin-inline: 10%;
+                margin-top: 10vh;
+            }
+
+            #controls {
+                grid-column: 1 / 3;
+                grid-row: 1;
+
+                display: flex;
+                align-items: center;
+
+                gap: 1rem;
+
+                color: #ebfeff;
+                
+                padding-inline: 1em;
+            }
+
+            #controls > button {
+                all: unset;
+
+                display: flex;
+                align-items: center;
+
+                aspect-ratio: 1 / 1;
+                padding: .1em;
+
+                border-radius: 15%;
+
+                font-size: 2rem;
+
+                transition: .3s;
+            }
+
+            #controls > button:hover {
+                background-color: #d6fcff;
+                color: #79aeb2;
+            }
+
+            #controls > button:active {
+                background-color: #79aeb2;
+                color: #ebfeff;
+            }
+
+
+            #ship-table {
+                grid-column: 1 / 3;
+                grid-row: 2;
+            }
+        </style>
+
         <div class="grid">
+            <div id="controls">
+                <h1 id="company-name">Company Name</h1>
+                <button onclick="getData()">
+                    <i class="ti ti-refresh" ></i>
+                </button>
+            </div>
             <div id="ship-table"></div>
             <div id="cargo-table"></div>
             <div id="harbour-table"></div>
         </div>
+        
         <script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script>
         <script>
 
-            new gridjs.Grid({
+            const shipGrid = new gridjs.Grid({
             columns: ["Name", "Pos X", "Pos Y", "Direction", "Current harbour", "Held cargo"],
             data: []}).render(document.getElementById("ship-table"));
 
-            new gridjs.Grid({
+            const cargoGrid = new gridjs.Grid({
             columns: ["ID", "Source", "Destination"],
             data: []}).render(document.getElementById("cargo-table"));
 
-            new gridjs.Grid({
+            const harbourGrid = new gridjs.Grid({
             columns: ["ID", "Name", "Pos X", "Pos Y"],
             data: []}).render(document.getElementById("harbour-table"));
 
             async function getData() {
                 const resp = await fetch('http://localhost:9000/data');
+                const data = await resp.json();
+                console.log(data);
 
-                console.log(await resp.json());
+                document.querySelector("#company-name").innerHTML = data.company.name;
+                shipGrid.updateConfig({
+                    data: data.shipsData
+                }).forceRender();
+                harbourGrid.updateConfig({
+                    data: data.harboursData
+                }).forceRender();
+                cargoGrid.updateConfig({
+                    data: data.cargosData
+                }).forceRender();
             }
         </script>
     </body>
