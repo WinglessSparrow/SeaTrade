@@ -16,7 +16,6 @@
     </head>
     <body>
         <style>
-
             /* #79aeb2 #79aeb2 #ebfeff #d6fcff #d6fcff*/
             body {
                 background-color: #79aeb2;
@@ -31,6 +30,8 @@
 
                 margin-inline: 10%;
                 margin-top: 10vh;
+
+                color: #ebfeff;
             }
 
             #controls {
@@ -45,6 +46,12 @@
                 color: #ebfeff;
                 
                 padding-inline: 1em;
+            }
+
+            #log {
+                color: rgb(175, 74, 74);
+                text-align: center;
+                font-size: 1.5rem;
             }
 
             #controls > button {
@@ -86,43 +93,90 @@
                 <button onclick="getData()">
                     <i class="ti ti-refresh" ></i>
                 </button>
+                <p id="log"></p>
             </div>
-            <div id="ship-table"></div>
-            <div id="cargo-table"></div>
-            <div id="harbour-table"></div>
+            <div id="ship-table">
+                <h2 style="margin: 0;">Ships</h2>
+                <div class="table"></div>
+            </div>
+            <div id="cargo-table">
+                <h2 style="margin: 0;">Cargos</h2>
+                <div class="table"></div>
+            </div>
+            <div id="harbour-table">
+                <h2 style="margin: 0;">Harbours</h2>
+                <div class="table"></div>
+            </div>
         </div>
         
         <script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script>
         <script>
+            let currData = {};
 
             const shipGrid = new gridjs.Grid({
             columns: ["Name", "Pos X", "Pos Y", "Direction", "Current harbour", "Held cargo"],
-            data: []}).render(document.getElementById("ship-table"));
+            data: []}).render(document.querySelector("#ship-table > .table"));
 
             const cargoGrid = new gridjs.Grid({
             columns: ["ID", "Source", "Destination"],
-            data: []}).render(document.getElementById("cargo-table"));
+            data: []}).render(document.querySelector("#cargo-table > .table"));
 
             const harbourGrid = new gridjs.Grid({
             columns: ["ID", "Name", "Pos X", "Pos Y"],
-            data: []}).render(document.getElementById("harbour-table"));
+            data: []}).render(document.querySelector("#harbour-table > .table"));
 
             async function getData() {
-                const resp = await fetch('http://localhost:9000/data');
-                const data = await resp.json();
-                console.log(data);
+                try {
+                    const resp = await fetch('http://localhost:9000/data');
+                    const data = await resp.json();
+                    console.log(data);
+                    
+                    if(JSON.stringify(currData) != JSON.stringify(data)) {
+                        currData = data;
 
-                document.querySelector("#company-name").innerHTML = data.company.name;
-                shipGrid.updateConfig({
-                    data: data.shipsData
-                }).forceRender();
-                harbourGrid.updateConfig({
-                    data: data.harboursData
-                }).forceRender();
-                cargoGrid.updateConfig({
-                    data: data.cargosData
-                }).forceRender();
+                        document.querySelector("#company-name").innerHTML = data.company.name;
+                        
+                        const config = {
+                            search: true,
+                            pagination: {
+                                limit: 10,
+                                summary: true,
+                            },
+                            sort: true,
+                            language: {
+                                pagination: {
+                                    previous: "<",
+                                    next: ">"
+                                }
+                            }
+                        }
+
+                        shipGrid.updateConfig({
+                            data: data.shipsData,
+                            ...config
+                        }).forceRender();
+
+                        harbourGrid.updateConfig({
+                            data: data.harboursData,
+                            ...config
+                        }).forceRender();
+                        
+                        cargoGrid.updateConfig({
+                            data: data.cargosData,
+                            ...config
+                        }).forceRender();
+
+                        document.querySelector("#log").textContent = "";
+                    }
+
+                } catch {
+                    document.querySelector("#log").innerHTML = "<i class='ti ti-bug'></i> Couldn't fetch new Data from the Backend";
+                }
             }
+
+            getData();
+
+            setInterval(getData, 5000);
         </script>
     </body>
 </html>
