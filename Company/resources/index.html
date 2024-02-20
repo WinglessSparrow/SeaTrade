@@ -1,182 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-        <link href="https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
-        <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Questrial">
-        <style>
-            body {
-                font-family: 'Questrial', serif;
-            }
-        </style>
-    </head>
-    <body>
-        <style>
-            /* #79aeb2 #79aeb2 #ebfeff #d6fcff #d6fcff*/
-            body {
-                background-color: #79aeb2;
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Questrial">
+    <style>
+        body {
+            font-family: 'Questrial', serif;
+        }
+    </style>
+</head>
+<body>
+<style>
+    /* #79aeb2 #79aeb2 #ebfeff #d6fcff #d6fcff*/
+    body {
+        background-color: #79aeb2;
+    }
 
-            .grid{
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                grid-template-rows: 50px 1fr 1fr;
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 50px 1fr 1fr;
 
-                gap: 1rem;
+        gap: 1rem;
 
-                margin-inline: 10%;
-                margin-top: 10vh;
+        margin-inline: 10%;
+        margin-top: 10vh;
 
-                color: #ebfeff;
-            }
+        color: #ebfeff;
+    }
 
-            #controls {
-                grid-column: 1 / 3;
-                grid-row: 1;
+    #controls {
+        grid-column: 1 / 3;
+        grid-row: 1;
 
-                display: flex;
-                align-items: center;
+        display: flex;
+        align-items: center;
 
-                gap: 1rem;
+        gap: 1rem;
 
-                color: #ebfeff;
-                
-                padding-inline: 1em;
-            }
+        color: #ebfeff;
 
-            #log {
-                color: rgb(175, 74, 74);
-                text-align: center;
-                font-size: 1.5rem;
-            }
+        padding-inline: 1em;
+    }
 
-            #controls > button {
-                all: unset;
+    #log {
+        color: rgb(175, 74, 74);
+        text-align: center;
+        font-size: 1.5rem;
+    }
 
-                display: flex;
-                align-items: center;
+    #controls > button {
+        all: unset;
 
-                aspect-ratio: 1 / 1;
-                padding: .1em;
+        display: flex;
+        align-items: center;
 
-                border-radius: 15%;
+        aspect-ratio: 1 / 1;
+        padding: .1em;
 
-                font-size: 2rem;
+        border-radius: 15%;
 
-                transition: .3s;
-            }
+        font-size: 2rem;
 
-            #controls > button:hover {
-                background-color: #d6fcff;
-                color: #79aeb2;
-            }
+        transition: .3s;
+    }
 
-            #controls > button:active {
-                background-color: #79aeb2;
-                color: #ebfeff;
-            }
+    #controls > button:hover {
+        background-color: #d6fcff;
+        color: #79aeb2;
+    }
+
+    #controls > button:active {
+        background-color: #79aeb2;
+        color: #ebfeff;
+    }
 
 
-            #ship-table {
-                grid-column: 1 / 3;
-                grid-row: 2;
-            }
-        </style>
+    #ship-table {
+        grid-column: 1 / 3;
+        grid-row: 2;
+    }
+</style>
 
-        <div class="grid">
-            <div id="controls">
-                <h1 id="company-name">Company Name</h1>
-                <button onclick="getData()">
-                    <i class="ti ti-refresh" ></i>
-                </button>
-                <p id="log"></p>
-            </div>
-            <div id="ship-table">
-                <h2 style="margin: 0;">Ships</h2>
-                <div class="table"></div>
-            </div>
-            <div id="cargo-table">
-                <h2 style="margin: 0;">Cargos</h2>
-                <div class="table"></div>
-            </div>
-            <div id="harbour-table">
-                <h2 style="margin: 0;">Harbours</h2>
-                <div class="table"></div>
-            </div>
-        </div>
-        
-        <script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script>
-        <script>
-            let currData = {};
+<div class="grid">
+    <div id="controls">
+        <h1 id="company-name">Company Name</h1>
+        <button onclick="getData()">
+            <i class="ti ti-refresh"></i>
+        </button>
+        <p id="log"></p>
+    </div>
+    <div id="ship-table">
+        <h2 style="margin: 0;">Ships</h2>
+        <div class="table"></div>
+    </div>
+    <div id="cargo-table">
+        <h2 style="margin: 0;">Cargos</h2>
+        <div class="table"></div>
+    </div>
+    <div id="harbour-table">
+        <h2 style="margin: 0;">Harbours</h2>
+        <div class="table"></div>
+    </div>
+</div>
 
-            const shipGrid = new gridjs.Grid({
-            columns: ["Name", "Pos X", "Pos Y", "Direction", "Current harbour", "Held cargo"],
-            data: []}).render(document.querySelector("#ship-table > .table"));
+<script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script>
+<script>
+    let currData = {};
 
-            const cargoGrid = new gridjs.Grid({
-            columns: ["ID", "Source", "Destination"],
-            data: []}).render(document.querySelector("#cargo-table > .table"));
+    const shipGrid = new gridjs.Grid({
+        columns: ["Name", "Pos X", "Pos Y", "Direction", "Held cargo", "Current harbour"],
+        data: []
+    }).render(document.querySelector("#ship-table > .table"));
 
-            const harbourGrid = new gridjs.Grid({
-            columns: ["ID", "Name", "Pos X", "Pos Y"],
-            data: []}).render(document.querySelector("#harbour-table > .table"));
+    const cargoGrid = new gridjs.Grid({
+        columns: ["ID", "Source", "Destination"],
+        data: []
+    }).render(document.querySelector("#cargo-table > .table"));
 
-            async function getData() {
-                try {
-                    const resp = await fetch('http://localhost:9000/data');
-                    const data = await resp.json();
-                    console.log(data);
-                    
-                    if(JSON.stringify(currData) != JSON.stringify(data)) {
-                        currData = data;
+    const harbourGrid = new gridjs.Grid({
+        columns: ["ID", "Name", "Pos X", "Pos Y"],
+        data: []
+    }).render(document.querySelector("#harbour-table > .table"));
 
-                        document.querySelector("#company-name").innerHTML = data.company.name;
-                        
-                        const config = {
-                            search: true,
-                            pagination: {
-                                limit: 10,
-                                summary: true,
-                            },
-                            sort: true,
-                            language: {
-                                pagination: {
-                                    previous: "<",
-                                    next: ">"
-                                }
-                            }
+    async function getData() {
+        try {
+            const resp = await fetch('http://localhost:9000/data');
+            const data = await resp.json();
+            console.log(data);
+
+            if (JSON.stringify(currData) != JSON.stringify(data)) {
+                currData = data;
+
+                document.querySelector("#company-name").innerHTML = data.company.name;
+
+                const config = {
+                    search: true,
+                    pagination: {
+                        limit: 10,
+                        summary: true,
+                    },
+                    sort: true,
+                    language: {
+                        pagination: {
+                            previous: "<",
+                            next: ">"
                         }
-
-                        shipGrid.updateConfig({
-                            data: data.shipsData,
-                            ...config
-                        }).forceRender();
-
-                        harbourGrid.updateConfig({
-                            data: data.harboursData,
-                            ...config
-                        }).forceRender();
-                        
-                        cargoGrid.updateConfig({
-                            data: data.cargosData,
-                            ...config
-                        }).forceRender();
-
-                        document.querySelector("#log").textContent = "";
                     }
-
-                } catch {
-                    document.querySelector("#log").innerHTML = "<i class='ti ti-bug'></i> Couldn't fetch new Data from the Backend";
                 }
+
+                shipGrid.updateConfig({
+                    data: data.shipsData,
+                    ...config
+                }).forceRender();
+
+                harbourGrid.updateConfig({
+                    data: data.harboursData,
+                    ...config
+                }).forceRender();
+
+                cargoGrid.updateConfig({
+                    data: data.cargosData,
+                    ...config
+                }).forceRender();
+
+                document.querySelector("#log").textContent = "";
             }
 
-            getData();
+        } catch {
+            document.querySelector("#log").innerHTML = "<i class='ti ti-bug'></i> Couldn't fetch new Data from the Backend";
+        }
+    }
 
-            setInterval(getData, 5000);
-        </script>
-    </body>
+    getData();
+
+    setInterval(getData, 5000);
+</script>
+</body>
 </html>

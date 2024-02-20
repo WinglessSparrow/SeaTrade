@@ -14,7 +14,7 @@ public class DBConnectionSingleton {
     public static Connection getConnection() {
         if (connection == null) {
             try {
-                connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/seatrade", "root", "");
+                connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/seatrade", "root", "Jarodilsja_1997D");
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

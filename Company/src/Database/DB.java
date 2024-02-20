@@ -7,7 +7,7 @@ public class DB {
     private final DBShip ship = new DBShip();
     private final DBCargo cargo = new DBCargo();
     private final DBCompany company = new DBCompany();
-    private final DBGetter getter = new DBGetter();
+    private final DBGetter getter = new DBGetter(this);
     private final DBHarbour harbour = new DBHarbour();
 
     public void clearDB() {
