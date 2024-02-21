@@ -72,19 +72,19 @@ public class ShipConnection extends Thread implements Closeable {
         Ship newShipState = null;
 
         switch (message.type()) {
-            case UPDATE -> newShipState = shipController.getShip(message.ship().name());
+            case UPDATE -> newShipState = shipController.getShip(message.ship().id());
 
-            case MOVE -> newShipState = shipController.moveShip(message.ship().name(), message.point(), message.cost());
+            case MOVE -> newShipState = shipController.moveShip(message.ship().id(), message.point(), message.cost());
 
             case REMOVE -> {
-                newShipState = shipController.removeShip(message.ship().name());
+                newShipState = shipController.removeShip(message.ship().id());
                 isDone = false;
             }
             case ADD -> newShipState = shipController.addNewShip(message.ship());
 
-            case LOAD -> newShipState = shipController.registerCargoLoad(message.ship().name(), message.cargoId());
+            case LOAD -> newShipState = shipController.registerCargoLoad(message.ship().id(), message.cargoId());
 
-            case UNLOAD -> newShipState = shipController.registerCargoUnload(message.ship().name(), message.cost());
+            case UNLOAD -> newShipState = shipController.registerCargoUnload(message.ship().id(), message.cost());
 
             default -> {
                 isDone = true;

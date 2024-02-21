@@ -26,11 +26,11 @@ public class ShipController implements Closeable {
         api.start();
     }
 
-    public Ship getShip(String shipId) {
+    public Ship getShip(int shipId) {
         return db.getShip().get(shipId);
     }
 
-    public Ship removeShip(String shipId) {
+    public Ship removeShip(int shipId) {
         var lastShipState = db.getShip().get(shipId);
 
         synchronized (this) {
@@ -42,16 +42,18 @@ public class ShipController implements Closeable {
 
     public Ship addNewShip(Ship ship) {
 
+        var company = db.getCompany().get();
+
         synchronized (this) {
-            db.getShip().add(ship);
+            db.getShip().add(ship, company.id());
         }
 
-        return db.getShip().get(ship.name());
+        return db.getShip().getByName(ship.name());
     }
 
-    public Ship moveShip(String shipName, Point point, int cost) {
+    public Ship moveShip(int shipId, Point point, int cost) {
         final var company = db.getCompany().get();
-        final var ship = db.getShip().get(shipName);
+        final var ship = db.getShip().get(shipId);
 
         synchronized (this) {
             db.startTransaction();
@@ -63,22 +65,22 @@ public class ShipController implements Closeable {
             db.commitTransaction();
         }
 
-        return db.getShip().get(shipName);
+        return db.getShip().get(shipId);
     }
 
-    public Ship registerCargoLoad(String shipName, String cargoId) {
-        final var currShip = db.getShip().get(shipName);
+    public Ship registerCargoLoad(int shipId, String cargoId) {
+        final var currShip = db.getShip().get(shipId);
         final var cargo = db.getCargo().get(cargoId);
 
         synchronized (this) {
             db.getShip().update(new Ship(currShip, cargo));
         }
 
-        return db.getShip().get(shipName);
+        return db.getShip().get(shipId);
     }
 
-    public Ship registerCargoUnload(String shipName, int profit) {
-        final var currShip = db.getShip().get(shipName);
+    public Ship registerCargoUnload(int shipId, int profit) {
+        final var currShip = db.getShip().get(shipId);
         final var company = db.getCompany().get();
 
         synchronized (this) {
@@ -90,7 +92,7 @@ public class ShipController implements Closeable {
             db.commitTransaction();
         }
 
-        return db.getShip().get(shipName);
+        return db.getShip().get(shipId);
     }
 
     @Override

@@ -1,9 +1,6 @@
 package Database;
 
-import Types.Cargo;
-import Types.Direction;
-import Types.Harbour;
-import Types.Ship;
+import Types.*;
 
 import java.awt.*;
 import java.sql.ResultSet;
@@ -42,29 +39,62 @@ public class DBShip {
     public void update(Ship ship) {
     }
 
-    public void add(Ship ship) {
-
-    }
-
-    public void delete(String shipId) {
-
-    }
-
-    public Ship get(String shipId) {
+    public void add(Ship ship, int companyId) {
+        var sql = "insert into Ship (name, pos_x, pos_y, direction, company, harbour, cargo) values (?, ?, ?, ?, ?, NULL, NULL);";
 
         var con = DBConnectionSingleton.getConnection();
-        Ship ship;
+
+        try {
+            var st = con.prepareStatement(sql);
+            st.setString(1, ship.name());
+            st.setInt(2, ship.pos().x);
+            st.setInt(3, ship.pos().y);
+            st.setString(4, ship.dir().name());
+            st.setInt(5, companyId);
+
+            st.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void delete(int shipId) {
+
+    }
+
+    public Ship get(int shipId) {
+
+        var con = DBConnectionSingleton.getConnection();
+        Ship ship = null;
 
         try {
             var st = con.prepareStatement(fullShipSQL + " where S.id = ?;");
-            st.setString(1, shipId);
+            st.setInt(1, shipId);
             st.execute();
 
             var resultSet = st.getResultSet();
-            resultSet.next();
 
-            ship = parseToShip(resultSet);
+            if (resultSet.next()) ship = parseToShip(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
+        return ship;
+    }
+
+    public Ship getByName(String shipName) {
+
+        var con = DBConnectionSingleton.getConnection();
+        Ship ship = null;
+
+        try {
+            var st = con.prepareStatement(fullShipSQL + " where S.name = ?;");
+            st.setString(1, shipName);
+            st.execute();
+
+            var resultSet = st.getResultSet();
+
+            if (resultSet.next()) ship = parseToShip(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -112,7 +142,7 @@ public class DBShip {
         var pos = new Point(result.getInt("pos_x"), result.getInt("pos_y"));
         var dir = Direction.valueOf(result.getString("direction"));
 
-        return new Ship(result.getString("name"), pos, dir, currHarbour, cargo);
+        return new Ship(result.getString("name"), result.getInt("id"), pos, dir, currHarbour, cargo);
     }
 
     private Ship parseToShip(ResultSet result) throws SQLException {
@@ -138,6 +168,6 @@ public class DBShip {
         var pos = new Point(result.getInt("pos_x"), result.getInt("pos_y"));
         var dir = Direction.valueOf(result.getString("direction"));
 
-        return new Ship(result.getString("name"), pos, dir, currHarbour, cargo);
+        return new Ship(result.getString("name"), result.getInt("id"), pos, dir, currHarbour, cargo);
     }
 }

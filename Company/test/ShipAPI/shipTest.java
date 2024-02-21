@@ -25,11 +25,14 @@ public class shipTest {
             BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
             PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
 
-            var s = new Ship("titanic", new Point(0, 0), Direction.DOWN, null, null);
+            var s = new Ship("Titanic", -1, new Point(2, 2), Direction.DOWN, null, null);
+            var getS = new Ship("", 5, new Point(0, 0), Direction.DOWN, null, null);
 
-            var f = new ShipMessageDTO(ShipMessageType.ADD, null, null, null, s);
+            var add = new ShipMessageDTO(ShipMessageType.ADD, null, null, null, s);
+            var get = new ShipMessageDTO(ShipMessageType.UPDATE, null, null, null, getS);
 
-            var json = new ObjectMapper().writeValueAsString(f);
+            var json = new ObjectMapper().writeValueAsString(add);
+//            var json = new ObjectMapper().writeValueAsString(get);
 
             System.out.println(json);
             r.readLine();
