@@ -30,13 +30,19 @@ public class ShipController implements Closeable {
         return db.getShip().get(shipId);
     }
 
-    public synchronized Ship removeShip(String shipId) {
-        return db.getShip().delete(shipId);
+    public Ship removeShip(String shipId) {
+        var lastShipState = db.getShip().get(shipId);
+
+        synchronized (this) {
+            db.getShip().delete(shipId);
+        }
+
+        return lastShipState;
     }
 
     public Ship addNewShip(Ship ship) {
 
-        synchronized (new Object()) {
+        synchronized (this) {
             db.getShip().add(ship);
         }
 
@@ -47,7 +53,7 @@ public class ShipController implements Closeable {
         final var company = db.getCompany().get();
         final var ship = db.getShip().get(shipName);
 
-        synchronized (new Object()) {
+        synchronized (this) {
             db.startTransaction();
 
             db.getShip().update(new Ship(ship, point));
@@ -64,7 +70,7 @@ public class ShipController implements Closeable {
         final var currShip = db.getShip().get(shipName);
         final var cargo = db.getCargo().get(cargoId);
 
-        synchronized (new Object()) {
+        synchronized (this) {
             db.getShip().update(new Ship(currShip, cargo));
         }
 
@@ -75,7 +81,7 @@ public class ShipController implements Closeable {
         final var currShip = db.getShip().get(shipName);
         final var company = db.getCompany().get();
 
-        synchronized (new Object()) {
+        synchronized (this) {
             db.startTransaction();
 
             db.getShip().update(new Ship(currShip, (Cargo) null));

@@ -1,11 +1,8 @@
 package Database;
 
 import Types.Cargo;
-import Types.Company;
 import Types.Harbour;
 
-import java.awt.*;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -35,7 +32,7 @@ public class DBCargo {
         final var cargos = new ArrayList<Cargo>();
 
         String sql = """
-                select H1.name as destination, H2.name as source, C.id as id, value 
+                select H1.name as destination, H2.name as source, C.id as id, value
                 from Cargo C
                          join seatrade.Harbour H1 on H1.id = C.destination
                          join seatrade.Harbour H2 on H2.id = C.source;
