@@ -37,6 +37,24 @@ public class DBShip {
                         """;
 
     public void update(Ship ship) {
+        var sql = "update Ship set direction = ?, cargo = ?, harbour = ?, pos_x = ?, pos_y = ? where id = ?";
+
+        var con = DBConnectionSingleton.getConnection();
+
+        try {
+            var st = con.prepareStatement(sql);
+            st.setString(1, ship.dir().toString());
+            st.setInt(2, ship.heldCargo().id());
+            st.setInt(3, ship.harbour().id());
+            st.setInt(4, ship.pos().x);
+            st.setInt(5, ship.pos().y);
+
+            st.setInt(6, ship.id());
+
+            st.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void add(Ship ship, int companyId) {
@@ -59,7 +77,19 @@ public class DBShip {
     }
 
     public void delete(int shipId) {
+        var sql = "delete from ship where id = ?";
 
+        var con = DBConnectionSingleton.getConnection();
+
+        try {
+            var st = con.prepareStatement(sql);
+
+            st.setInt(1, shipId);
+
+            st.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Ship get(int shipId) {

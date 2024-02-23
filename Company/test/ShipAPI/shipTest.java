@@ -27,12 +27,15 @@ public class shipTest {
 
             var s = new Ship("Titanic", -1, new Point(2, 2), Direction.DOWN, null, null);
             var getS = new Ship("", 5, new Point(0, 0), Direction.DOWN, null, null);
+            var remS = new Ship("", 7, null, Direction.DOWN, null, null);
 
             var add = new ShipMessageDTO(ShipMessageType.ADD, null, null, null, s);
             var get = new ShipMessageDTO(ShipMessageType.UPDATE, null, null, null, getS);
+            var delete = new ShipMessageDTO(ShipMessageType.REMOVE, null, null, null, remS);
 
-            var json = new ObjectMapper().writeValueAsString(add);
+//            var json = new ObjectMapper().writeValueAsString(add);
 //            var json = new ObjectMapper().writeValueAsString(get);
+            var json = new ObjectMapper().writeValueAsString(delete);
 
             System.out.println(json);
             r.readLine();

@@ -70,6 +70,7 @@ public class ShipConnection extends Thread implements Closeable {
     @SuppressWarnings("ReassignedVariable")
     private CompanyResponseDTO handleMessage(ShipMessageDTO message) {
         Ship newShipState = null;
+        boolean unknownCommand = false;
 
         switch (message.type()) {
             case UPDATE -> newShipState = shipController.getShip(message.ship().id());
@@ -88,11 +89,14 @@ public class ShipConnection extends Thread implements Closeable {
 
             default -> {
                 isDone = true;
+                unknownCommand = true;
                 Logger.logErr("Unknown command received", this);
             }
         }
 
-        return (newShipState == null) ? new CompanyResponseDTO(false, null, "API doesn't know: " + message.type() + " please reconnect") : new CompanyResponseDTO(true, newShipState, null);
+        var errorMessage = (newShipState == null && unknownCommand) ? "API doesn't know: " + message.type() + " please reconnect" : "The ship ID of " + message.ship().id() + " not contained in the DB";
+
+        return (newShipState == null) ? new CompanyResponseDTO(false, null, errorMessage) : new CompanyResponseDTO(true, newShipState, null);
 
     }
 
