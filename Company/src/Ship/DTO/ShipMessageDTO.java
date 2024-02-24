@@ -6,7 +6,7 @@ import java.awt.*;
 
 public record ShipMessageDTO(
         ShipMessageType type,
-        String cargoId,
+        int cargoId,
         Integer cost,
         Point point,
         Ship ship

@@ -16,11 +16,6 @@ public class DBGetter {
     }
 
     public DBDump dumpDB() {
-        return new DBDump(
-                db.getCompany().get(),
-                db.getShip().getAllShips(),
-                db.getCargo().getAllCargo(),
-                db.getHarbour().getAllHarbours()
-        );
+        return new DBDump(db.getCompany().get(), db.getShip().getAllShips(), db.getCargo().getAllCargo(), db.getHarbour().getAllHarbours());
     }
 }

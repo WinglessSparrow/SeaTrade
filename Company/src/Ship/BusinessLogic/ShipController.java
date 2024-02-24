@@ -68,7 +68,7 @@ public class ShipController implements Closeable {
         return db.getShip().get(shipId);
     }
 
-    public Ship registerCargoLoad(int shipId, String cargoId) {
+    public Ship registerCargoLoad(int shipId, int cargoId) {
         final var currShip = db.getShip().get(shipId);
         final var cargo = db.getCargo().get(cargoId);
 
