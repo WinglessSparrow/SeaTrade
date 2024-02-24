@@ -2,14 +2,27 @@ package Database;
 
 import Database.ORMapping.CargoMapping;
 import Types.Cargo;
-import Types.Harbour;
 
-import java.awt.*;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DBCargo {
+
+    private static final String sqlFullCargo = """
+            select C.id     as id,
+                        C.value  as value,
+                        H.id     as dest_id,
+                        H.name   as dest_name,
+                        H.pos_x  as dest_x,
+                        H.pos_y  as dest_y,
+                        H2.id    as src_id,
+                        H2.name  as src_name,
+                        H2.pos_x as src_x,
+                        H2.pos_y as src_y
+                 from Cargo C
+                          join seatrade.Harbour H on H.id = C.destination
+                          join seatrade.Harbour H2 on H2.id = C.source
+            """;
 
     public void add(Cargo cargo) {
         var sql = "insert into Cargo values(?, ?, ?, ?);";
@@ -60,22 +73,7 @@ public class DBCargo {
     }
 
     public Cargo get(int cargoId) {
-        var sql = """   
-                 select C.id     as id,
-                        C.value  as value,
-                        H.id     as dest_id,
-                        H.name   as dest_name,
-                        H.pos_x  as dest_x,
-                        H.pos_y  as dest_y,
-                        H2.id    as src_id,
-                        H2.name  as src_name,
-                        H2.pos_x as src_x,
-                        H2.pos_y as src_y
-                 from Cargo C
-                          join seatrade.Harbour H on H.id = C.destination
-                          join seatrade.Harbour H2 on H2.id = C.source
-                where C.id = ?;
-                      """;
+        var sql = sqlFullCargo + " where C.id = ?;";
 
         var con = DBConnectionSingleton.getConnection();
 
@@ -102,22 +100,15 @@ public class DBCargo {
 
         final var cargos = new ArrayList<Cargo>();
 
-        String sql = """
-                select H1.name as destination, H2.name as source, C.id as id, value
-                from Cargo C
-                         join seatrade.Harbour H1 on H1.id = C.destination
-                         join seatrade.Harbour H2 on H2.id = C.source;
-                """;
-
         try {
             var con = DBConnectionSingleton.getConnection();
 
-            var st = con.prepareStatement(sql);
+            var st = con.prepareStatement(sqlFullCargo + ";");
             st.execute();
             var set = st.getResultSet();
 
             while (set.next()) {
-                cargos.add(CargoMapping.mapCargoShallow(set, null));
+                cargos.add(CargoMapping.mapCargo(set, null));
             }
 
         } catch (SQLException e) {

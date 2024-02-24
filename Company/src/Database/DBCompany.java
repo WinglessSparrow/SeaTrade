@@ -3,7 +3,6 @@ package Database;
 import Types.Company;
 
 import java.awt.*;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBCompany {
@@ -48,8 +47,9 @@ public class DBCompany {
     public Company get() {
         Company company;
 
+        var con = DBConnectionSingleton.getConnection();
+
         try {
-            var con = DBConnectionSingleton.getConnection();
 
             var st = con.prepareStatement("SELECT * from Company");
             st.execute();

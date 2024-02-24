@@ -143,7 +143,7 @@ public class DBShip {
             var resultSet = st.getResultSet();
 
             while (resultSet.next()) {
-                ships.add(ShipMapping.mapShipShallow(resultSet, null));
+                ships.add(ShipMapping.mapShip(resultSet, null));
             }
 
         } catch (SQLException e) {

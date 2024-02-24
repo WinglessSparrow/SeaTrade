@@ -1,8 +1,8 @@
 package Database;
 
+import Database.ORMapping.HarbourMapping;
 import Types.Harbour;
 
-import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -42,7 +42,7 @@ public class DBHarbour {
             var set = st.getResultSet();
 
             while (set.next()) {
-                harbours.add(new Harbour(set.getInt("id"), set.getString("name"), new Point(set.getInt("pos_x"), set.getInt("pos_y"))));
+                harbours.add(HarbourMapping.mapHarbour(set, null));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -2,11 +2,6 @@ package Database;
 
 import Types.*;
 
-import java.awt.*;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 public class DBGetter {
 
     private final DB db;
