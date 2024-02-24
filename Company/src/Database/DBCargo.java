@@ -37,6 +37,8 @@ public class DBCargo {
         var con = DBConnectionSingleton.getConnection();
 
         try {
+            con.setAutoCommit(false);
+
             var st = con.prepareStatement(sql);
 
             for (var cargo : cargos) {
@@ -49,6 +51,9 @@ public class DBCargo {
             }
 
             st.executeBatch();
+
+            con.commit();
+            con.setAutoCommit(true);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

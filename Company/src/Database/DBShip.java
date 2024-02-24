@@ -1,5 +1,6 @@
 package Database;
 
+import Database.ORMapping.ShipMapping;
 import Types.*;
 
 import java.awt.*;
@@ -124,7 +125,7 @@ public class DBShip {
 
             var resultSet = st.getResultSet();
 
-            if (resultSet.next()) ship = parseToShip(resultSet);
+            if (resultSet.next()) ship = ShipMapping.mapShip(resultSet, null);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -144,7 +145,7 @@ public class DBShip {
             var resultSet = st.getResultSet();
 
             while (resultSet.next()) {
-                ships.add(parseToShallowShip(resultSet));
+                ships.add(ShipMapping.mapShipShallow(resultSet, null));
             }
 
         } catch (SQLException e) {
@@ -152,52 +153,5 @@ public class DBShip {
         }
 
         return ships.toArray(new Ship[0]);
-    }
-
-    private Ship parseToShallowShip(ResultSet result) throws SQLException {
-        var destHarbour = new Harbour(-1, result.getString("dest_name"), null);
-        var srcHarbour = new Harbour(-1, result.getString("src_name"), null);
-
-        Cargo cargo = null;
-
-        if (result.getInt("cargo_id") > 0) {
-            cargo = new Cargo(destHarbour, srcHarbour, result.getInt("cargo_id"), result.getInt("cargo_value"));
-        }
-
-        Harbour currHarbour = null;
-        if (result.getString("harbour_name") != null) {
-            currHarbour = new Harbour(-1, result.getString("harbour_name"), null);
-        }
-
-        var pos = new Point(result.getInt("pos_x"), result.getInt("pos_y"));
-        var dir = Direction.valueOf(result.getString("direction"));
-
-        return new Ship(result.getString("name"), result.getInt("id"), pos, dir, currHarbour, cargo);
-    }
-
-    private Ship parseToShip(ResultSet result) throws SQLException {
-
-        Cargo cargo = null;
-
-        if (result.getString("cargo_id") != null) {
-            var destPos = new Point(result.getInt("dest_x"), result.getInt("dest_y"));
-            var destHarbour = new Harbour(result.getInt("dest_id"), result.getString("dest_name"), destPos);
-
-            var srcPos = new Point(result.getInt("src_x"), result.getInt("src_y"));
-            var srcHarbour = new Harbour(result.getInt("src_id"), result.getString("src_name"), srcPos);
-            cargo = new Cargo(destHarbour, srcHarbour, result.getInt("cargo_id"), result.getInt("cargo_value"));
-        }
-
-        Harbour currHarbour = null;
-
-        if (result.getString("harbour_name") != null) {
-            var harbourPos = new Point(result.getInt("harbour_x"), result.getInt("harbour_y"));
-            currHarbour = new Harbour(result.getInt("harbour_id"), result.getString("harbour_name"), harbourPos);
-        }
-
-        var pos = new Point(result.getInt("pos_x"), result.getInt("pos_y"));
-        var dir = Direction.valueOf(result.getString("direction"));
-
-        return new Ship(result.getString("name"), result.getInt("id"), pos, dir, currHarbour, cargo);
     }
 }

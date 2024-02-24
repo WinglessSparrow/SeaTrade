@@ -9,6 +9,26 @@ import java.util.ArrayList;
 public class DBHarbour {
     public void addBulk(Harbour[] harbours) {
 
+        String sql = "insert into Harbour (name, pos_x, pos_y) values (?, ?, ?)";
+
+        var con = DBConnectionSingleton.getConnection();
+
+        try {
+            con.setAutoCommit(false);
+
+            var st = con.prepareStatement(sql);
+
+            for (var harbour : harbours) {
+                st.setString(1, harbour.name());
+                st.setInt(2, harbour.pos().x);
+                st.setInt(2, harbour.pos().y);
+            }
+
+            con.commit();
+            con.setAutoCommit(true);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Harbour[] getAllHarbours() {
