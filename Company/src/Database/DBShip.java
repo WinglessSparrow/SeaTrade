@@ -3,8 +3,6 @@ package Database;
 import Database.ORMapping.ShipMapping;
 import Types.*;
 
-import java.awt.*;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -105,7 +103,7 @@ public class DBShip {
 
             var resultSet = st.getResultSet();
 
-            if (resultSet.next()) ship = parseToShip(resultSet);
+            if (resultSet.next()) ship = ShipMapping.mapShip(resultSet, null);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
