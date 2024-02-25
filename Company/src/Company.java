@@ -6,8 +6,6 @@ import Web.Controller.WebController;
 import Web.Server.WebServer;
 
 import java.io.IOException;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Company {
@@ -24,7 +22,7 @@ public class Company {
 
         try (var webServer = new WebServer(webController);
              var shipController = new ShipController(db, 8080);
-             var seaTradeController = new SeaTradeController(db, "SeaTrade", 8081);
+             var seaTradeController = new SeaTradeController(db, "SeaTrade", 8081)
         ) {
             seaTradeController.init();
 
@@ -33,12 +31,13 @@ public class Company {
             while (running) {
                 running = !scanner.nextLine().equals("shutdown");
             }
+
         } catch (IOException e) {
             Logger.logErr("oopsie woopsie, everything broke!", Company.class);
             throw new RuntimeException(e);
         }
 
-        Logger.logGreen("See you space cowboy...", DB.class);
+        Logger.logGreen("See you space cowboy...", Company.class);
 
     }
 }

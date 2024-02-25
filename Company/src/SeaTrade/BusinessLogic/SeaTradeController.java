@@ -56,6 +56,7 @@ public class SeaTradeController implements Closeable {
 
     @Override
     public void close() throws IOException {
+        api.exit();
         api.close();
     }
 }
