@@ -22,9 +22,9 @@ public class Company {
 
         try (var webServer = new WebServer(webController);
              var shipController = new ShipController(db, 8080);
-             var seaTradeController = new SeaTradeController(db, "SeaTrade", 8081)
+//             var seaTradeController = new SeaTradeController(db, "SeaTrade", 8081)
         ) {
-            seaTradeController.init();
+//            seaTradeController.init();
 
             var scanner = new Scanner(System.in);
 
