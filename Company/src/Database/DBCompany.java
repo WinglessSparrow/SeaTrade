@@ -6,6 +6,20 @@ import java.awt.*;
 import java.sql.SQLException;
 
 public class DBCompany {
+    public void clearData() {
+        var sql = "delete from company where id > 0;";
+
+        var con = DBConnectionSingleton.getConnection();
+
+        try {
+            var st = con.prepareStatement(sql);
+
+            st.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void update(Company company) {
         String sql = "update company set deposit = ?, map_height = ?, map_width = ?, name = ? where id = ?";
 

@@ -71,8 +71,6 @@ public class SeaTradeAPI extends Thread implements Closeable {
                     controller.setCargos(CargoParser.parseResponseArr(dto.CARGO()));
                 } else if (dto.HARBOUR() != null) {
                     controller.setHarbours(HarbourParser.parserResponseArr(dto.HARBOUR()));
-                } else {
-                    Logger.logErr("Neither Cargo nor Harbour was set with the 'endinfo' CMD", this);
                 }
             }
             case registered -> controller.setCompany(CompanyParser.parseResponse(dto, controller.getCompanyName()));
@@ -82,9 +80,7 @@ public class SeaTradeAPI extends Thread implements Closeable {
     }
 
     private boolean isCargoObject(String json) throws JsonProcessingException {
-        var prefetch = new ObjectMapper().readValue(json, SeaTradePrefetch.class);
-
-        return prefetch.CMD() == ResponseTypes.newCargo;
+        return json.contains("\"CMD\":\"newCargo\"");
     }
 
     private SeaTradeResponseCargo parseResponseCargo(String json) throws JsonProcessingException {

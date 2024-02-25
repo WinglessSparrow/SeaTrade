@@ -24,6 +24,20 @@ public class DBCargo {
                           join seatrade.Harbour H2 on H2.id = C.source
             """;
 
+    public void clearData() {
+        var sql = "delete from cargo where id > 0;";
+
+        var con = DBConnectionSingleton.getConnection();
+
+        try {
+            var st = con.prepareStatement(sql);
+
+            st.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void add(Cargo cargo) {
         var sql = "insert into Cargo values(?, ?, ?, ?);";
 

@@ -35,6 +35,20 @@ public class DBShip {
                     left join seatrade.Harbour H3 on H3.id = C.destination
                         """;
 
+    public void clearData() {
+        var sql = "delete from ship where id > 0;";
+
+        var con = DBConnectionSingleton.getConnection();
+
+        try {
+            var st = con.prepareStatement(sql);
+
+            st.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void update(Ship ship) {
         var sql = "update Ship set direction = ?, cargo = ?, harbour = ?, pos_x = ?, pos_y = ? where id = ?";
 

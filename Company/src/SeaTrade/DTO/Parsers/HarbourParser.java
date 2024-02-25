@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class HarbourParser {
     public static HarbourResponseDTO parse(Harbour harbour) {
-        return new HarbourResponseDTO(harbour.name(), new PositionDTO(harbour.pos().x, harbour.pos().y));
+        return new HarbourResponseDTO(harbour.name(), new PositionDTO(harbour.pos().x, harbour.pos().y, "NONE"));
     }
 
     public static Harbour parseResponse(HarbourResponseDTO harbour) {

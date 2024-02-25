@@ -1,5 +1,6 @@
 import Database.*;
 import Logger.Logger;
+import SeaTrade.BusinessLogic.SeaTradeController;
 import Ship.BusinessLogic.ShipController;
 import Web.Controller.WebController;
 import Web.Server.WebServer;
@@ -16,12 +17,16 @@ public class Company {
     public static void main(String[] args) {
 
         var db = new DB();
+
+        db.clearDB();
+
         var webController = new WebController(db);
 
-        try (var webServer = new WebServer(webController); var shipController = new ShipController(db, 8080);
-//                var seaTradeController = new SeaTradeController(db, "SeaTrade", 8081);
+        try (var webServer = new WebServer(webController);
+             var shipController = new ShipController(db, 8080);
+             var seaTradeController = new SeaTradeController(db, "SeaTrade", 8081);
         ) {
-//            seaTradeController.init();
+            seaTradeController.init();
 
             var scanner = new Scanner(System.in);
 

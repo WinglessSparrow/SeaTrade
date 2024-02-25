@@ -32,7 +32,10 @@ public class SeaTradeController implements Closeable {
     }
 
     public synchronized void addNewCargo(Cargo cargo) {
-        db.getCargo().add(cargo);
+        var dest = db.getHarbour().getByName(cargo.dest().name());
+        var src = db.getHarbour().getByName(cargo.src().name());
+
+        db.getCargo().add(new Cargo(dest, src, cargo));
     }
 
     public synchronized void setCargos(Cargo[] cargos) {

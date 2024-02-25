@@ -11,7 +11,10 @@ public class DB {
     private final DBHarbour harbour = new DBHarbour();
 
     public void clearDB() {
-
+        ship.clearData();
+        cargo.clearData();
+        harbour.clearData();
+        company.clearData();
     }
 
     public void startTransaction() {
