@@ -3,6 +3,7 @@ package Ship.BusinessLogic;
 import Types.Cargo;
 import Types.Company;
 import Database.DB;
+import Types.Direction;
 import Types.Ship;
 import Logger.Logger;
 import Ship.API.ShipAPI;
@@ -51,14 +52,14 @@ public class ShipController implements Closeable {
         return db.getShip().getByName(ship.name());
     }
 
-    public Ship moveShip(int shipId, Point point, int cost) {
+    public Ship moveShip(int shipId, Point point, Direction dir, int cost) {
         final var company = db.getCompany().get();
         final var ship = db.getShip().get(shipId);
 
         synchronized (this) {
             db.startTransaction();
 
-            db.getShip().update(new Ship(ship, point));
+            db.getShip().update(new Ship(ship, point, dir));
 
             db.getCompany().update(new Company(company, company.deposit() - cost));
 
@@ -90,6 +91,19 @@ public class ShipController implements Closeable {
             db.getCompany().update(new Company(company, company.deposit() + profit));
 
             db.commitTransaction();
+        }
+
+        return db.getShip().get(shipId);
+    }
+
+    public Ship registerHarbourReached(int shipId, String harbourName) {
+        final var currShip = db.getShip().get(shipId);
+        final var harbour = db.getHarbour().getByName(harbourName);
+
+        final var newShip = new Ship(currShip, harbour);
+
+        synchronized (this) {
+            db.getShip().update(newShip);
         }
 
         return db.getShip().get(shipId);

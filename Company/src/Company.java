@@ -13,6 +13,7 @@ public class Company {
     private static boolean running = true;
 
     public static void main(String[] args) {
+        var scanner = new Scanner(System.in);
 
         var db = new DB();
 
@@ -20,12 +21,12 @@ public class Company {
 
         var webController = new WebController(db);
 
-        try (var webServer = new WebServer(webController); var shipController = new ShipController(db, 8080);
-//             var seaTradeController = new SeaTradeController(db, "SeaTrade", 8081)
+        try (
+                var webServer = new WebServer(webController);
+                var shipController = new ShipController(db, 8080);
+                var seaTradeController = new SeaTradeController(db, "SeaTrade", 8081)
         ) {
-//            seaTradeController.init();
-
-            var scanner = new Scanner(System.in);
+            seaTradeController.init();
 
             while (running) {
                 running = !scanner.nextLine().equals("shutdown");
@@ -37,6 +38,5 @@ public class Company {
         }
 
         Logger.logGreen("See you space cowboy...", Company.class);
-
     }
 }

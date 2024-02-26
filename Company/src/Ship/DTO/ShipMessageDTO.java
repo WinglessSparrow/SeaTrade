@@ -1,8 +1,9 @@
 package Ship.DTO;
 
-import Types.Ship;
+import Types.Direction;
 
 import java.awt.*;
 
-public record ShipMessageDTO(ShipMessageType type, Integer cargoId, Integer cost, Point point, Ship ship) {
+public record ShipMessageDTO(ShipMessageType type, Integer id, String name, Point point, Direction direction,
+                             String harbour, Integer cargoId, Integer cost) {
 }

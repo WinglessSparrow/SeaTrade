@@ -73,19 +73,23 @@ public class ShipConnection extends Thread implements Closeable {
         boolean unknownCommand = false;
 
         switch (message.type()) {
-            case UPDATE -> newShipState = shipController.getShip(message.ship().id());
+            case UPDATE -> newShipState = shipController.getShip(message.id());
 
-            case MOVE -> newShipState = shipController.moveShip(message.ship().id(), message.point(), message.cost());
+            case MOVE ->
+                    newShipState = shipController.moveShip(message.id(), message.point(), message.direction(), message.cost());
 
             case REMOVE -> {
-                newShipState = shipController.removeShip(message.ship().id());
+                newShipState = shipController.removeShip(message.id());
                 isDone = false;
             }
-            case ADD -> newShipState = shipController.addNewShip(message.ship());
+            case ADD ->
+                    newShipState = shipController.addNewShip(new Ship(message.name(), message.id(), message.point(), message.direction(), null, null));
 
-            case LOAD -> newShipState = shipController.registerCargoLoad(message.ship().id(), message.cargoId());
+            case LOAD -> newShipState = shipController.registerCargoLoad(message.id(), message.cargoId());
 
-            case UNLOAD -> newShipState = shipController.registerCargoUnload(message.ship().id(), message.cost());
+            case UNLOAD -> newShipState = shipController.registerCargoUnload(message.id(), message.cost());
+
+            case REACHED -> newShipState = shipController.registerHarbourReached(message.id(), message.harbour());
 
             default -> {
                 isDone = true;
@@ -94,7 +98,7 @@ public class ShipConnection extends Thread implements Closeable {
             }
         }
 
-        var errorMessage = (newShipState == null && unknownCommand) ? "API doesn't know: " + message.type() + " please reconnect" : "The ship ID of " + message.ship().id() + " not contained in the DB";
+        var errorMessage = (newShipState == null && unknownCommand) ? "API doesn't know: " + message.type() + " please reconnect" : "The ship ID of " + message.id() + " not contained in the DB";
 
         return (newShipState == null) ? new CompanyResponseDTO(false, null, errorMessage) : new CompanyResponseDTO(true, newShipState, null);
 

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Questrial">
     <link rel="stylesheet" href="http://localhost:9000/style">
+    <link rel="stylesheet" href="./style.css">
     <style>
         body {
             font-family: 'Questrial', serif;
@@ -39,7 +40,40 @@
     </div>
 </div>
 
+<div id="map">
+    <canvas></canvas>
+</div>
+
+<script>
+    // Box width
+    var bw = 400;
+    // Box height
+    var bh = 400;
+    // Padding
+    var p = 10;
+
+    var canvas = document.querySelector("#map > canvas");
+    var context = canvas.getContext("2d");
+
+    function drawBoard() {
+        for (let x = 0; x <= bw; x += 40) {
+            context.moveTo(0.5 + x + p, p);
+            context.lineTo(0.5 + x + p, bh + p);
+        }
+
+        for (let x = 0; x <= bh; x += 40) {
+            context.moveTo(p, 0.5 + x + p);
+            context.lineTo(bw + p, 0.5 + x + p);
+        }
+        context.strokeStyle = "black";
+        context.stroke();
+    }
+
+    drawBoard();
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script>
 <script src="http://localhost:9000/script"></script>
+<script src="./script.js"></script>
 </body>
 </html>
