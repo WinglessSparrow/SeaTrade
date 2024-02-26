@@ -44,21 +44,6 @@
     <div id="map"></div>
 </div>
 
-<script>
-const map = document.querySelector("#interactive-map > #map");
-
-for(let i = 0; i < 20; i++) {
-    for(let j = 0; j < 20; j++){
-        const node = document.createElement("div");
-        node.classList = ["cell"];
-        node.style = `grid-column: ${i}; grid-row: ${j}`
-    
-        map.appendChild(node);
-    }
-}
-
-</script>
-
 <script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script>
 <script src="http://localhost:9000/script"></script>
 <script src="./script.js"></script>

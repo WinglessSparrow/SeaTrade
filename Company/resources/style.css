@@ -1,91 +1,106 @@
 /* #79aeb2 #79aeb2 #ebfeff #d6fcff #d6fcff*/
 body {
-    background-color: #79aeb2;
+  background-color: #79aeb2;
 }
 
 .grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 50px 1fr 1fr;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 50px;
 
-    gap: 1rem;
+  gap: 1rem;
 
-    margin-inline: 10%;
-    margin-top: 10vh;
+  margin-inline: 10%;
+  margin-top: 10vh;
 
-    color: #ebfeff;
+  color: #ebfeff;
 }
 
 #interactive-map {
-    padding-inline: 15vw;
-    margin-top: 4rem;
+  padding-inline: 15vw;
+  margin-top: 4rem;
+  margin-bottom: 4rem;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #interactive-map > #map {
-    display: grid;
+  display: grid;
 
-    width: 40vw;
-    height: 40vh;
-
-    background-color: red;
+  background-color: lightblue;
 }
 
 #map > .cell {
-    aspect-ratio: 1/1;
-    outline: solid 1px black;
+  width: 1.5vw;
+
+  grid-column: var(--x);
+  grid-row: var(--y);
+
+  aspect-ratio: 1/1;
+}
+
+#map > .choosable {
+  transition: 0.1s;
+}
+
+#map > .choosable:hover {
+  scale: 1.1 1.1;
+  outline: 1px solid black;
+}
+
+svg {
+  vertical-align: top;
 }
 
 #controls {
-    grid-column: 1 / 3;
-    grid-row: 1;
+  grid-column: 1 / 3;
+  grid-row: 1;
 
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    gap: 1rem;
+  gap: 1rem;
 
-    color: #ebfeff;
+  color: #ebfeff;
 
-    padding-inline: 1em;
+  padding-inline: 1em;
 }
 
 #log {
-    color: rgb(175, 74, 74);
-    text-align: center;
-    font-size: 1.5rem;
+  color: rgb(175, 74, 74);
+  text-align: center;
+  font-size: 1.5rem;
 }
 
 #controls > button {
-    all: unset;
+  all: unset;
 
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    aspect-ratio: 1 / 1;
-    padding: 0.1em;
+  aspect-ratio: 1 / 1;
+  padding: 0.1em;
 
-    border-radius: 15%;
+  border-radius: 15%;
 
-    font-size: 2rem;
+  font-size: 2rem;
 
-    transition: 0.3s;
+  transition: 0.3s;
 }
 
 #controls > button:hover {
-    background-color: #d6fcff;
-    color: #79aeb2;
+  background-color: #d6fcff;
+  color: #79aeb2;
 }
 
 #controls > button:active {
-    background-color: #79aeb2;
-    color: #ebfeff;
+  background-color: #79aeb2;
+  color: #ebfeff;
 }
 
 #ship-table {
-    grid-column: 1 / 3;
-    grid-row: 2;
+  grid-column: 1 / 3;
+  grid-row: 2;
 }
