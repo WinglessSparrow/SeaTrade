@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="src/json-20231013.jar"/>
+	<classpathentry kind="lib" path="u:/Eigene Dateien/3.Lehrjahr/SeaTrade Projekt/jackson-annotations-2.16.1.jar"/>
+	<classpathentry kind="lib" path="u:/Eigene Dateien/3.Lehrjahr/SeaTrade Projekt/jackson-core-2.16.1.jar"/>
+	<classpathentry kind="lib" path="u:/Eigene Dateien/3.Lehrjahr/SeaTrade Projekt/jackson-databind-2.16.1.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
