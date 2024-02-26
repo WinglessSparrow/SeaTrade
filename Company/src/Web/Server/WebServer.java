@@ -20,6 +20,8 @@ public class WebServer implements Closeable {
 
             server.createContext("/", new SiteServer());
             server.createContext("/data", new DataHandler(controller));
+            server.createContext("/style", new StyleServer());
+            server.createContext("/script", new ScriptServer());
 
             server.setExecutor(null);
             server.start();

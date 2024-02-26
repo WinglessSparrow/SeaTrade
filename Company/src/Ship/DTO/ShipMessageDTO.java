@@ -4,11 +4,5 @@ import Types.Ship;
 
 import java.awt.*;
 
-public record ShipMessageDTO(
-        ShipMessageType type,
-        int cargoId,
-        Integer cost,
-        Point point,
-        Ship ship
-) {
+public record ShipMessageDTO(ShipMessageType type, Integer cargoId, Integer cost, Point point, Ship ship) {
 }

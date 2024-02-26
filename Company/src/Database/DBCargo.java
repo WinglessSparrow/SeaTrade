@@ -25,7 +25,7 @@ public class DBCargo {
             """;
 
     public void clearData() {
-        var sql = "delete from cargo where id > 0;";
+        var sql = "delete from Cargo where id > 0;";
 
         var con = DBConnectionSingleton.getConnection();
 

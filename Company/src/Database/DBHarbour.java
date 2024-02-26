@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class DBHarbour {
 
     public void clearData() {
-        var sql = "delete from harbour where id > 0;";
+        var sql = "delete from Harbour where id > 0;";
 
         var con = DBConnectionSingleton.getConnection();
 

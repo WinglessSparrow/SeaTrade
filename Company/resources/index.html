@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Questrial">
+    <link rel="stylesheet" href="http://localhost:9000/style">
     <style>
         body {
             font-family: 'Questrial', serif;
@@ -15,175 +16,30 @@
 </head>
 
 <body>
-    <style>
-        /* #79aeb2 #79aeb2 #ebfeff #d6fcff #d6fcff*/
-        body {
-        background-color: #79aeb2;
-        }
 
-        .grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 50px 1fr 1fr;
-
-        gap: 1rem;
-
-        margin-inline: 10%;
-        margin-top: 10vh;
-
-        color: #ebfeff;
-        }
-
-        #controls {
-        grid-column: 1 / 3;
-        grid-row: 1;
-
-        display: flex;
-        align-items: center;
-
-        gap: 1rem;
-
-        color: #ebfeff;
-
-        padding-inline: 1em;
-        }
-
-        #log {
-        color: rgb(175, 74, 74);
-        text-align: center;
-        font-size: 1.5rem;
-        }
-
-        #controls > button {
-        all: unset;
-
-        display: flex;
-        align-items: center;
-
-        aspect-ratio: 1 / 1;
-        padding: 0.1em;
-
-        border-radius: 15%;
-
-        font-size: 2rem;
-
-        transition: 0.3s;
-        }
-
-        #controls > button:hover {
-        background-color: #d6fcff;
-        color: #79aeb2;
-        }
-
-        #controls > button:active {
-        background-color: #79aeb2;
-        color: #ebfeff;
-        }
-
-        #ship-table {
-        grid-column: 1 / 3;
-        grid-row: 2;
-        }
-    </style>
-
-    <div class="grid">
-        <div id="controls">
-            <h1 id="company-name">Company Name</h1>
-            <button onclick="getData()">
-                <i class="ti ti-refresh"></i>
-            </button>
-            <p id="log"></p>
-        </div>
-        <div id="ship-table">
-            <h2 style="margin: 0;"><i class="ti ti-ship"></i> Ships</h2>
-            <div class="table"></div>
-        </div>
-        <div id="cargo-table">
-            <h2 style="margin: 0;"><i class="ti ti-box-seam"></i> Cargos</h2>
-            <div class="table"></div>
-        </div>
-        <div id="harbour-table">
-            <h2 style="margin: 0;"><i class="ti ti-anchor"></i> Harbours</h2>
-            <div class="table"></div>
-        </div>
+<div class="grid">
+    <div id="controls">
+        <h1 id="company-name">Company Name</h1>
+        <button onclick="getData()">
+            <i class="ti ti-refresh"></i>
+        </button>
+        <p id="log"></p>
     </div>
+    <div id="ship-table">
+        <h2 style="margin: 0;"><i class="ti ti-ship"></i> Ships</h2>
+        <div class="table"></div>
+    </div>
+    <div id="cargo-table">
+        <h2 style="margin: 0;"><i class="ti ti-box-seam"></i> Cargos</h2>
+        <div class="table"></div>
+    </div>
+    <div id="harbour-table">
+        <h2 style="margin: 0;"><i class="ti ti-anchor"></i> Harbours</h2>
+        <div class="table"></div>
+    </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script>
-    <script>
-        let currData = {};
-
-        const shipGrid = new gridjs.Grid({
-        columns: ["Name", "Pos X", "Pos Y", "Direction", "Held cargo", "Current harbour"],
-        data: []
-        }).render(document.querySelector("#ship-table > .table"));
-
-        const cargoGrid = new gridjs.Grid({
-        columns: ["ID", "Source", "Destination"],
-        data: []
-        }).render(document.querySelector("#cargo-table > .table"));
-
-        const harbourGrid = new gridjs.Grid({
-        columns: ["ID", "Name", "Pos X", "Pos Y"],
-        data: []
-        }).render(document.querySelector("#harbour-table > .table"));
-
-        async function getData() {
-        try {
-            const resp = await fetch("http://localhost:9000/data");
-            const data = await resp.json();
-            console.log(data);
-
-            if (JSON.stringify(currData) != JSON.stringify(data)) {
-            currData = data;
-
-            document.querySelector("#company-name").innerHTML = data.company.name;
-
-            const config = {
-                search: true,
-                pagination: {
-                limit: 10,
-                summary: true
-                },
-                sort: true,
-                language: {
-                pagination: {
-                    previous: "<",
-                    next: ">"
-                }
-                }
-            };
-
-            shipGrid
-                .updateConfig({
-                data: data.shipsData,
-                ...config
-                })
-                .forceRender();
-
-            harbourGrid
-                .updateConfig({
-                data: data.harboursData,
-                ...config
-                })
-                .forceRender();
-
-            cargoGrid
-                .updateConfig({
-                data: data.cargosData,
-                ...config
-                })
-                .forceRender();
-
-            document.querySelector("#log").textContent = "";
-            }
-        } catch {
-            document.querySelector("#log").innerHTML = "<i class='ti ti-bug'></i> Couldn't fetch new Data from the Backend";
-        }
-        }
-
-        getData();
-
-        setInterval(getData, 5000);
-    </script>
+<script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script>
+<script src="http://localhost:9000/script"></script>
 </body>
 </html>

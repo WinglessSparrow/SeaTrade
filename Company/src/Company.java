@@ -20,8 +20,7 @@ public class Company {
 
         var webController = new WebController(db);
 
-        try (var webServer = new WebServer(webController);
-             var shipController = new ShipController(db, 8080);
+        try (var webServer = new WebServer(webController); var shipController = new ShipController(db, 8080);
 //             var seaTradeController = new SeaTradeController(db, "SeaTrade", 8081)
         ) {
 //            seaTradeController.init();

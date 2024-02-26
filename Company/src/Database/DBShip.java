@@ -36,7 +36,7 @@ public class DBShip {
                         """;
 
     public void clearData() {
-        var sql = "delete from ship where id > 0;";
+        var sql = "delete from Ship where id > 0;";
 
         var con = DBConnectionSingleton.getConnection();
 
@@ -90,7 +90,7 @@ public class DBShip {
     }
 
     public void delete(int shipId) {
-        var sql = "delete from ship where id = ?";
+        var sql = "delete from Ship where id = ?";
 
         var con = DBConnectionSingleton.getConnection();
 
