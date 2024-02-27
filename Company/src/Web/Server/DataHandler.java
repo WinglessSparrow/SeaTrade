@@ -22,13 +22,13 @@ public class DataHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
 
-        Logger.log("new DB-Dump request", this);
+        Logger.log("new DB-Dump request");
 
         var dto = new DBDumpDTO(controller.dumpDBData());
         var json = parseToJson(dto);
         var bytes = json.getBytes();
 
-        Logger.log("sending the DB-Dump", this);
+        Logger.log("sending the DB-Dump");
 
         exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
         exchange.sendResponseHeaders(200, bytes.length);
@@ -37,7 +37,7 @@ public class DataHandler implements HttpHandler {
             os.write(bytes);
         }
 
-        Logger.log("DB-Dump sent", this);
+        Logger.log("DB-Dump sent");
 
         exchange.close();
     }

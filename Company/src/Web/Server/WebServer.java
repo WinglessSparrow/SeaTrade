@@ -26,7 +26,7 @@ public class WebServer implements Closeable {
             server.setExecutor(null);
             server.start();
         } catch (IOException e) {
-            Logger.logErr("Cannot create HttpServer " + e, this);
+            Logger.logErr("Cannot create HttpServer " + e);
             throw new RuntimeException();
         }
     }
@@ -34,6 +34,6 @@ public class WebServer implements Closeable {
     @Override
     public void close() throws IOException {
         server.stop(0);
-        Logger.log("Server shutdown", this);
+        Logger.log("Server shutdown");
     }
 }

@@ -31,7 +31,7 @@ public class SeaTradeAPI extends Thread implements Closeable {
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             writer = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
-            Logger.logErr(e.toString(), this);
+            Logger.logErr(e.toString());
             throw new RuntimeException(e);
         }
     }
@@ -42,7 +42,7 @@ public class SeaTradeAPI extends Thread implements Closeable {
             try {
                 String json = reader.readLine();
 
-                Logger.log("New response from the SeaTrade server, they say " + json, this);
+                Logger.log("New response from the SeaTrade server, they say " + json);
 
                 if (isCargoObject(json)) {
                     handleNewCargoResponse(parseResponseCargo(json));
@@ -50,7 +50,7 @@ public class SeaTradeAPI extends Thread implements Closeable {
                     handleResponse(parseResponse(json));
                 }
 
-                Logger.log("SeaTrade server response handled", this);
+                Logger.log("SeaTrade server response handled");
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -65,7 +65,7 @@ public class SeaTradeAPI extends Thread implements Closeable {
 
     private void handleResponse(SeaTradeResponseDTO dto) {
         switch (dto.CMD()) {
-            case error -> Logger.logErr(dto.ERROR() + " | " + dto.DATA(), this);
+            case error -> Logger.logErr(dto.ERROR() + " | " + dto.DATA());
             case endinfo -> {
                 if (dto.CARGO() != null) {
                     controller.setCargos(CargoParser.parseResponseArr(dto.CARGO()));
@@ -74,7 +74,7 @@ public class SeaTradeAPI extends Thread implements Closeable {
                 }
             }
             case registered -> controller.setCompany(CompanyParser.parseResponse(dto, controller.getCompanyName()));
-            default -> Logger.logErr("Unknown Command received: " + dto.CMD(), this);
+            default -> Logger.logErr("Unknown Command received: " + dto.CMD());
 
         }
     }
@@ -104,7 +104,7 @@ public class SeaTradeAPI extends Thread implements Closeable {
             throw new RuntimeException(e);
         }
 
-        Logger.log("Register Request OUT", this);
+        Logger.log("Register Request OUT");
     }
 
     public void getCargos() {
@@ -116,7 +116,7 @@ public class SeaTradeAPI extends Thread implements Closeable {
             throw new RuntimeException(e);
         }
 
-        Logger.log("Get Cargos OUT", this);
+        Logger.log("Get Cargos OUT");
     }
 
     public void getHarbours() {
@@ -128,7 +128,7 @@ public class SeaTradeAPI extends Thread implements Closeable {
             throw new RuntimeException(e);
         }
 
-        Logger.log("Get Harbours OUT", this);
+        Logger.log("Get Harbours OUT");
     }
 
     public void exit() {
@@ -140,7 +140,7 @@ public class SeaTradeAPI extends Thread implements Closeable {
             throw new RuntimeException(e);
         }
 
-        Logger.log("Get TF OUT", this);
+        Logger.log("Get TF OUT");
     }
 
     @Override
