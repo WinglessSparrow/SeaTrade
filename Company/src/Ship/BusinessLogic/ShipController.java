@@ -23,7 +23,9 @@ public class ShipController implements Closeable {
         api = new ShipAPI(this, port);
 
         Logger.log("Starting SHIP API", this);
+    }
 
+    public void launch() {
         api.start();
     }
 

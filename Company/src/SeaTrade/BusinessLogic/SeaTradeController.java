@@ -8,6 +8,7 @@ import SeaTrade.API.SeaTradeAPI;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 
 public class SeaTradeController implements Closeable {
     private final DB db;
@@ -16,19 +17,19 @@ public class SeaTradeController implements Closeable {
 
     private final SeaTradeAPI api;
 
-    public SeaTradeController(DB db, String companyName, int port) {
+    public SeaTradeController(DB db, String companyName, InetSocketAddress addr) {
         this.db = db;
         this.companyName = companyName;
 
-        api = new SeaTradeAPI(this, "localhost", port);
+        api = new SeaTradeAPI(this, addr.getHostName(), addr.getPort());
     }
 
     public void init() {
         api.start();
 
         api.register(companyName);
-        api.getCargos();
         api.getHarbours();
+        api.getCargos();
     }
 
     public synchronized void addNewCargo(Cargo cargo) {

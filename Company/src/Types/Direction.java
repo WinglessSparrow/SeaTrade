@@ -1,5 +1,5 @@
 package Types;
 
 public enum Direction {
-    UP, DOWN, RIGHT, LEFT
+    NORTH, EAST, SOUTH, WEST, NONE
 }

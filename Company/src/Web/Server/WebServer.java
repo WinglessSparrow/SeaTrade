@@ -13,10 +13,10 @@ public class WebServer implements Closeable {
 
     private final HttpServer server;
 
-    public WebServer(WebController controller) {
+    public WebServer(WebController controller, InetSocketAddress httpAddr) {
 
         try {
-            server = HttpServerProvider.provider().createHttpServer(new InetSocketAddress("localhost", 9000), 0);
+            server = HttpServerProvider.provider().createHttpServer(httpAddr, 0);
 
             server.createContext("/", new SiteServer());
             server.createContext("/data", new DataHandler(controller));
@@ -30,7 +30,6 @@ public class WebServer implements Closeable {
             throw new RuntimeException();
         }
     }
-
 
     @Override
     public void close() throws IOException {
