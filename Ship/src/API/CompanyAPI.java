@@ -50,13 +50,13 @@ public class CompanyAPI {
 
     public CompanyAPI(String host, int port) throws UnknownHostException, IOException {
 
-//		socket = new Socket(host, port);
-//		OutputStream outStream = socket.getOutputStream();
-//		writer = new PrintWriter(outStream, true);
-//		InputStream inStream = socket.getInputStream();
-//		reader = new BufferedReader(new InputStreamReader(inStream));
-//		responseListener = new ResponseListener();
-//		responseListener.start();
+        socket = new Socket(host, port);
+        OutputStream outStream = socket.getOutputStream();
+        writer = new PrintWriter(outStream, true);
+        InputStream inStream = socket.getInputStream();
+        reader = new BufferedReader(new InputStreamReader(inStream));
+        responseListener = new ResponseListener();
+        responseListener.start();
 
     }
 

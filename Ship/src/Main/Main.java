@@ -21,6 +21,7 @@ public class Main {
         System.out.println("Company-Host eingeben: ");
         String cHost = sc.next();
         ship.createApi(cPort, cHost, sPort, sHost);
+
     }
 
 }
