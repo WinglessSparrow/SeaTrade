@@ -1,8 +1,12 @@
 package UI;
 
+import Logger.Log;
 import Main.CompanyController;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -23,7 +27,6 @@ public class UI extends JFrame {
         var ctrHolder = new ControlsPanel();
 
         ctrHolder.getStartServerButton().addActionListener(a -> {
-
             String cmpName = ctrHolder.getCompanyName().getText();
             int cmpPort = Integer.parseInt(ctrHolder.getCompanyPort().getText());
 
@@ -33,10 +36,13 @@ public class UI extends JFrame {
             ctr = new CompanyController(new InetSocketAddress(ip, port), cmpPort, cmpName);
 
             ctr.launch();
+
+            ctrHolder.getShutdownButton().setEnabled(true);
+            ctrHolder.getRestartServerButton().setEnabled(true);
+            ctrHolder.getOpenWebSiteButton().setEnabled(true);
         });
 
         ctrHolder.getOpenWebSiteButton().addActionListener(a -> {
-
             try {
                 var uri = new URI("http://localhost:9000");
                 Desktop.getDesktop().browse(uri);
@@ -45,7 +51,13 @@ public class UI extends JFrame {
             }
         });
 
-        ctrHolder.getShutdownButton().addActionListener(a -> ctr.shutdown());
+        ctrHolder.getShutdownButton().addActionListener(a -> {
+            ctrHolder.getShutdownButton().setEnabled(false);
+            ctrHolder.getRestartServerButton().setEnabled(false);
+            ctrHolder.getOpenWebSiteButton().setEnabled(false);
+
+            ctr.shutdown();
+        });
 
         ctrHolder.getRestartServerButton().addActionListener(a -> ctr.restart());
 
@@ -61,5 +73,38 @@ public class UI extends JFrame {
         });
 
         add(ctrHolder.getMainPanel());
+
+        ctrHolder.getTextPane().setCaretColor(Color.WHITE);
+
+        Log.setOut(msg -> {
+            try {
+                var sDoc = ctrHolder.getTextPane().getStyledDocument();
+                sDoc.insertString(sDoc.getLength(), "| LOG | " + msg + "\n", null);
+            } catch (BadLocationException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        Log.setGreenOut(msg -> {
+            try {
+                var keyWord = new SimpleAttributeSet();
+                StyleConstants.setForeground(keyWord, new Color(48, 182, 65));
+                var sDoc = ctrHolder.getTextPane().getStyledDocument();
+                sDoc.insertString(sDoc.getLength(), "| LOG | " + msg + "\n", keyWord);
+            } catch (BadLocationException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        Log.setErrOut(msg -> {
+            try {
+                var keyWord = new SimpleAttributeSet();
+                StyleConstants.setForeground(keyWord, new Color(199, 28, 28));
+                var sDoc = ctrHolder.getTextPane().getStyledDocument();
+                sDoc.insertString(sDoc.getLength(), "| ERROR | " + msg + "\n", keyWord);
+            } catch (BadLocationException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }

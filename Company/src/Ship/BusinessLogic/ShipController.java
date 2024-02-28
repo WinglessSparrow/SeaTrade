@@ -5,7 +5,7 @@ import Types.Company;
 import Database.DB;
 import Types.Direction;
 import Types.Ship;
-import Logger.Logger;
+import Logger.Log;
 import Ship.API.ShipAPI;
 
 import java.awt.*;
@@ -22,7 +22,7 @@ public class ShipController implements Closeable {
 
         api = new ShipAPI(this, port);
 
-        Logger.log("Starting SHIP API");
+        Log.log("Starting SHIP API");
     }
 
     public void launch() {

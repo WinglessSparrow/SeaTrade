@@ -1,6 +1,6 @@
 package Web.Server;
 
-import Logger.Logger;
+import Logger.Log;
 import Web.Controller.WebController;
 import Web.DTO.DBDumpDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,13 +22,13 @@ public class DataHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
 
-        Logger.log("new DB-Dump request");
+        Log.log("new DB-Dump request");
 
         var dto = new DBDumpDTO(controller.dumpDBData());
         var json = parseToJson(dto);
         var bytes = json.getBytes();
 
-        Logger.log("sending the DB-Dump");
+        Log.log("sending the DB-Dump");
 
         exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
         exchange.sendResponseHeaders(200, bytes.length);
@@ -37,7 +37,7 @@ public class DataHandler implements HttpHandler {
             os.write(bytes);
         }
 
-        Logger.log("DB-Dump sent");
+        Log.log("DB-Dump sent");
 
         exchange.close();
     }

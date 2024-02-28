@@ -12,7 +12,7 @@ public class ControlsPanel {
     private JPanel mainPanel;
     private JTextField companyName;
     private JButton shutdownButton;
-    private JTextPane textPane1;
+    private JTextPane textPane;
 
     public JPanel getMainPanel() {
         return mainPanel;
@@ -50,7 +50,7 @@ public class ControlsPanel {
         return shutdownButton;
     }
 
-    public JTextPane getTextPane1() {
-        return textPane1;
+    public JTextPane getTextPane() {
+        return textPane;
     }
 }

@@ -1,16 +1,13 @@
 package Main;
 
 import Database.DB;
-import Logger.Logger;
 import SeaTrade.BusinessLogic.SeaTradeController;
 import Ship.BusinessLogic.ShipController;
 import Web.Controller.WebController;
 import Web.Server.WebServer;
 
 import java.io.IOException;
-import java.net.Inet4Address;
 import java.net.InetSocketAddress;
-import java.util.Scanner;
 
 public class CompanyController {
 
@@ -30,6 +27,7 @@ public class CompanyController {
 
         seaTradeController.init();
         shipController.launch();
+        webServer.launch();
     }
 
     public void restart() {

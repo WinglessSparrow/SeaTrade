@@ -1,7 +1,7 @@
 package Ship.API;
 
 import Types.Ship;
-import Logger.Logger;
+import Logger.Log;
 import Ship.BusinessLogic.ShipController;
 import Ship.DTO.CompanyResponseDTO;
 import Ship.DTO.ShipMessageDTO;
@@ -38,7 +38,7 @@ public class ShipConnection extends Thread implements Closeable {
             try {
                 String json = reader.readLine();
 
-                Logger.log("the Ship send: " + json);
+                Log.log("the Ship send: " + json);
 
                 CompanyResponseDTO answer = handleMessage(parseMessage(json));
 
@@ -46,23 +46,23 @@ public class ShipConnection extends Thread implements Closeable {
 
                 writer.println(answerString);
 
-                Logger.log("I answered: " + answerString);
+                Log.log("I answered: " + answerString);
             } catch (IOException e) {
                 isDone = true;
 
-                Logger.logErr(e.toString());
+                Log.logErr(e.toString());
 
                 if (e.toString().contains("socket is closed")) {
                     try {
                         writer.println(parseAnswer(new CompanyResponseDTO(false, null, "500 | unexpected error occurred | please reconnect")));
                     } catch (IOException ex) {
-                        Logger.logErr(ex.toString());
+                        Log.logErr(ex.toString());
                     }
                 }
             }
         }
 
-        Logger.log("Ship removed, bye bye");
+        Log.log("Ship removed, bye bye");
 
         close();
     }
@@ -94,7 +94,7 @@ public class ShipConnection extends Thread implements Closeable {
             default -> {
                 isDone = true;
                 unknownCommand = true;
-                Logger.logErr("Unknown command received");
+                Log.logErr("Unknown command received");
             }
         }
 

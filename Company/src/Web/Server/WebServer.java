@@ -1,6 +1,6 @@
 package Web.Server;
 
-import Logger.Logger;
+import Logger.Log;
 import Web.Controller.WebController;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.spi.HttpServerProvider;
@@ -24,16 +24,19 @@ public class WebServer implements Closeable {
             server.createContext("/script", new ScriptServer());
 
             server.setExecutor(null);
-            server.start();
         } catch (IOException e) {
-            Logger.logErr("Cannot create HttpServer " + e);
+            Log.logErr("Cannot create HttpServer " + e);
             throw new RuntimeException();
         }
+    }
+
+    public void launch() {
+        server.start();
     }
 
     @Override
     public void close() throws IOException {
         server.stop(0);
-        Logger.log("Server shutdown");
+        Log.log("Server shutdown");
     }
 }

@@ -1,6 +1,6 @@
 package Ship.API;
 
-import Logger.Logger;
+import Logger.Log;
 import Ship.BusinessLogic.ShipController;
 
 import java.io.Closeable;
@@ -20,10 +20,10 @@ public class ShipAPI extends Thread implements Closeable {
             socket = new ServerSocket(port);
 
         } catch (IOException e) {
-            Logger.logErr(e.toString());
+            Log.logErr(e.toString());
         }
 
-        Logger.logGreen("SHIP API working");
+        Log.logGreen("SHIP API working");
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ShipAPI extends Thread implements Closeable {
 
                 new ShipConnection(connection, controller).start();
 
-                Logger.log("New Ship connected");
+                Log.log("New Ship connected");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
