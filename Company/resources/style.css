@@ -1,6 +1,13 @@
 /* #79aeb2 #79aeb2 #ebfeff #d6fcff #d6fcff*/
+html {
+  overflow-x: hidden;
+}
+
 body {
   background-color: #79aeb2;
+
+  padding-inline: 10%;
+  padding-top: 10vh;
 }
 
 .grid {
@@ -9,9 +16,6 @@ body {
   grid-template-rows: 50px;
 
   gap: 1rem;
-
-  margin-inline: 10%;
-  margin-top: 10vh;
 
   color: #ebfeff;
 }
@@ -48,6 +52,38 @@ body {
 #map > .choosable:hover {
   scale: 1.1 1.1;
   outline: 1px solid black;
+}
+
+.cell:has(.with-tooltip) {
+  position: relative;
+}
+
+.with-tooltip > .tooltip {
+  position: absolute;
+  top: 0;
+  left: 105%;
+
+  width: 150px;
+
+  text-overflow: unset;
+
+  visibility: hidden;
+
+  background-color: white;
+
+  padding: 0.2rem;
+
+  font-size: 12px;
+}
+
+.with-tooltip > .tooltip h3,
+p {
+  padding: 0;
+  margin: 0;
+}
+
+.with-tooltip:hover > .tooltip {
+  visibility: visible;
 }
 
 svg {
