@@ -1,4 +1,4 @@
-package Web.Server;
+package Web.Handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -9,15 +9,15 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class StyleServer implements HttpHandler {
+public class ScriptHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        var absPath = new File("Company/resources/style.css").getAbsolutePath();
+        var absPath = new File("Company/resources/script.js").getAbsolutePath();
         var path = Path.of(absPath);
         byte[] fileBytes = Files.readAllBytes(path);
 
         exchange.sendResponseHeaders(200, fileBytes.length);
-        exchange.getResponseHeaders().set("Content-Type", "text/css");
+        exchange.getResponseHeaders().set("Content-Type", "text/javascript");
 
         try (OutputStream os = exchange.getResponseBody()) {
             os.write(fileBytes);

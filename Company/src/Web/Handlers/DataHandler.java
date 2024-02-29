@@ -1,4 +1,4 @@
-package Web.Server;
+package Web.Handlers;
 
 import Logger.Log;
 import Web.Controller.WebController;

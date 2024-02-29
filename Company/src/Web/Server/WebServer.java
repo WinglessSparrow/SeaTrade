@@ -2,6 +2,10 @@ package Web.Server;
 
 import Logger.Log;
 import Web.Controller.WebController;
+import Web.Handlers.DataHandler;
+import Web.Handlers.ScriptHandler;
+import Web.Handlers.SiteHandler;
+import Web.Handlers.StyleHandler;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.spi.HttpServerProvider;
 
@@ -18,10 +22,10 @@ public class WebServer implements Closeable {
         try {
             server = HttpServerProvider.provider().createHttpServer(httpAddr, 0);
 
-            server.createContext("/", new SiteServer());
             server.createContext("/data", new DataHandler(controller));
-            server.createContext("/style", new StyleServer());
-            server.createContext("/script", new ScriptServer());
+            server.createContext("/", new SiteHandler());
+            server.createContext("/style", new StyleHandler());
+            server.createContext("/script", new ScriptHandler());
 
             server.setExecutor(null);
         } catch (IOException e) {

@@ -1,5 +1,7 @@
 package Database;
 
+import Logger.Log;
+
 import java.sql.SQLException;
 
 public class DB {
@@ -11,6 +13,8 @@ public class DB {
     private final DBHarbour harbour = new DBHarbour();
 
     public void clearDB() {
+        Log.log("Clearing the DB");
+
         ship.clearData();
         cargo.clearData();
         harbour.clearData();
@@ -33,6 +37,7 @@ public class DB {
             try {
                 DBConnectionSingleton.getConnection().rollback();
             } catch (SQLException ex) {
+                Log.logErr(ex.toString());
                 throw new RuntimeException(ex);
             }
         }

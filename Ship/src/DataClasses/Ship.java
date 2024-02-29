@@ -16,15 +16,12 @@ public class Ship {
     private Harbour harbour = null;
     private Cargo heldCargo = null;
 
-    public Ship() {
-
-
-    }
+    private ShipController controller = null;
 
     public void createApi(int cPort, String cHost, int sPort, String sHost) throws UnknownHostException, IOException {
 
         CompanyAPI company = new CompanyAPI(cHost, cPort);
-        ShipController controller = new ShipController(company, this, sPort, sHost);
+        controller = new ShipController(company, this, sPort, sHost);
         company.setController(controller);
 
     }
@@ -85,7 +82,9 @@ public class Ship {
     public void set(Cargo heldCargo) {
 
         this.heldCargo = heldCargo;
-
     }
 
+    public ShipController getController() {
+        return controller;
+    }
 }
