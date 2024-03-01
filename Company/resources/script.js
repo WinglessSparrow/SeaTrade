@@ -16,94 +16,9 @@ const harbourGrid = new gridjs.Grid({
 
 async function getData() {
     try {
-        // const resp = await fetch("http://localhost:9000/data");
-        // const data = await resp.json();
-        // console.log(data);
-
-        const data = {
-                "company": {
-                    "name": "East India Trading Company",
-                    "deposit": 50000000,
-                    "mapSize": {
-                        "width": 30,
-                        "height": 20
-                    },
-                    "id": 30
-                },
-                "cargosData": [
-                    ["90", "145", "150"],
-                    ["91", "146", "152"],
-                    ["92", "150", "145"],
-                ],
-                "shipsData": [
-                    ["Titanic", "17", "0", "UP", "90", "145"],
-                    ["Uss Gerald R. Ford", "7", "10", "UP", "91", "Null"],
-                    ["JP Kaga", "5", "2", "UP", "Null", "Null"]
-                ],
-                "harboursData": [
-                    [
-                        "145",
-                        "reykjavik",
-                        "17",
-                        "0"
-                    ],
-                    [
-                        "146",
-                        "lissabon",
-                        "25",
-                        "9"
-                    ],
-                    [
-                        "147",
-                        "dakar",
-                        "24",
-                        "16"
-                    ],
-                    [
-                        "148",
-                        "algier",
-                        "29",
-                        "13"
-                    ],
-                    [
-                        "149",
-                        "cotonau",
-                        "29",
-                        "18"
-                    ],
-                    [
-                        "150",
-                        "halifax",
-                        "2",
-                        "3"
-                    ],
-                    [
-                        "151",
-                        "plymouth",
-                        "29",
-                        "0"
-                    ],
-                    [
-                        "152",
-                        "brest",
-                        "28",
-                        "5"
-                    ],
-                    [
-                        "153",
-                        "new york",
-                        "0",
-                        "10"
-                    ],
-                    [
-                        "154",
-                        "carracas",
-                        "2",
-                        "18"
-                    ]
-                ]
-            }
-        
+        const resp = await fetch("http://localhost:9000/data");
+        const data = await resp.json();
+        console.log(data);
 
         if (JSON.stringify(currData) != JSON.stringify(data)) {
             currData = data;
@@ -143,7 +58,7 @@ async function getData() {
                 .forceRender();
 
             document.querySelector("#log").textContent = "";
-            
+
             render();
         }
     } catch (e) {
@@ -164,21 +79,17 @@ const render = () => {
                 node.style = `--x:${x + 1}; --y:${y + 1};`;
 
                 let ship;
-                if (
-                    currData.shipsData.some((a) => {
-                        ship = a;
-                        return a[1] === x + "" && a[2] === y + "";
-                    })
-                ) insertShip(node, ship);
+                if (currData.shipsData.some((a) => {
+                    ship = a;
+                    return a[1] === x + "" && a[2] === y + "";
+                })) insertShip(node, ship);
 
                 let hrbr;
-                if (
-                    currData.harboursData.some((a) => {
-                        hrbr = a;
-                        return a[2] === x + "" && a[3] === y + "";
-                    })
-                ) insertHarbour(node, hrbr);
-                
+                if (currData.harboursData.some((a) => {
+                    hrbr = a;
+                    return a[2] === x + "" && a[3] === y + "";
+                })) insertHarbour(node, hrbr);
+
 
                 map.appendChild(node);
             }
@@ -196,13 +107,13 @@ const insertShip = (node, ship) => {
     tooltip.classList.add('tooltip');
 
     const heldCargos = [];
-    currData.cargosData.forEach(c=>{
-        if(ship[4] == c[0]) {
+    currData.cargosData.forEach(c => {
+        if (ship[4] == c[0]) {
             heldCargos.push(c[0]);
         }
     })
 
-    const cargoTxt = `<fieldset><legend>Cargo</legend>${heldCargos.map(c=>`<p>${c}</p>`)}</fieldset>`;
+    const cargoTxt = `<fieldset><legend>Cargo</legend>${heldCargos.map(c => `<p>${c}</p>`)}</fieldset>`;
 
     tooltip.innerHTML = `<h3>${ship[0]}</h3>${cargoTxt}`;
 
@@ -219,29 +130,29 @@ const insertHarbour = (node, hrbr) => {
     tooltip.classList.add('tooltip');
 
     const heldShips = [];
-    currData.shipsData.forEach(s=>{
-        if(hrbr[0] == s[5]) {
+    currData.shipsData.forEach(s => {
+        if (hrbr[0] == s[5]) {
             heldShips.push(s[0]);
         }
     })
 
     const heldCargos = [];
-    currData.cargosData.forEach(c=>{
-        if(hrbr[0] == c[1]) {
+    currData.cargosData.forEach(c => {
+        if (hrbr[0] == c[1]) {
             heldCargos.push(c[0]);
         }
     })
 
     const heldCargosAwait = [];
-    currData.cargosData.forEach(c=>{
-        if(hrbr[0] == c[2]) {
+    currData.cargosData.forEach(c => {
+        if (hrbr[0] == c[2]) {
             heldCargosAwait.push(c[0]);
         }
     })
 
-    const shipsTxt = `<fieldset><legend>Ships</legend>${heldShips.map(s=>`<p>${s}</p>`)}</fieldset>`;
-    const cargoTxt = `<fieldset><legend>Origin Cargos</legend>${heldCargos.map(c=>`<p>${c}</p>`)}</fieldset>`;
-    const cargoAwaitedTxt = `<fieldset><legend>Awaited Cargos</legend>${heldCargosAwait.map(c=>`<p>${c}</p>`)}</fieldset>`;
+    const shipsTxt = `<fieldset><legend>Ships</legend>${heldShips.map(s => `<p>${s}</p>`)}</fieldset>`;
+    const cargoTxt = `<fieldset><legend>Origin Cargos</legend>${heldCargos.map(c => `<p>${c}</p>`)}</fieldset>`;
+    const cargoAwaitedTxt = `<fieldset><legend>Awaited Cargos</legend>${heldCargosAwait.map(c => `<p>${c}</p>`)}</fieldset>`;
 
     tooltip.innerHTML = `<h3>${hrbr[1]}</h3>${shipsTxt}${cargoTxt}${cargoAwaitedTxt}`;
 
