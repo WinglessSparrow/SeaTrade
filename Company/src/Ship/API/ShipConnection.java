@@ -38,7 +38,7 @@ public class ShipConnection extends Thread implements Closeable {
             try {
                 String json = reader.readLine();
 
-                Log.log("the Ship send: " + json);
+                Log.log("a Ship talked to me");
 
                 CompanyResponseDTO answer = handleMessage(parseMessage(json));
 
@@ -69,6 +69,9 @@ public class ShipConnection extends Thread implements Closeable {
 
     @SuppressWarnings("ReassignedVariable")
     private CompanyResponseDTO handleMessage(ShipMessageDTO message) {
+        Log.log("Ships message: ");
+        Log.logJson(message);
+
         Ship newShipState = null;
         boolean unknownCommand = false;
 

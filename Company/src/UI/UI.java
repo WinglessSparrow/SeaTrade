@@ -40,6 +40,8 @@ public class UI extends JFrame {
             ctrHolder.getShutdownButton().setEnabled(true);
             ctrHolder.getRestartServerButton().setEnabled(true);
             ctrHolder.getOpenWebSiteButton().setEnabled(true);
+
+            ctrHolder.getStartServerButton().setEnabled(false);
         });
 
         ctrHolder.getOpenWebSiteButton().addActionListener(a -> {
@@ -55,6 +57,8 @@ public class UI extends JFrame {
             ctrHolder.getShutdownButton().setEnabled(false);
             ctrHolder.getRestartServerButton().setEnabled(false);
             ctrHolder.getOpenWebSiteButton().setEnabled(false);
+
+            ctrHolder.getStartServerButton().setEnabled(true);
 
             ctr.shutdown();
         });

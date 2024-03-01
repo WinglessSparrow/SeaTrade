@@ -42,7 +42,7 @@ public class SeaTradeAPI extends Thread implements Closeable {
             try {
                 String json = reader.readLine();
 
-                Log.log("New response from the SeaTrade server, they say " + json);
+                Log.log("New response from the SeaTrade");
 
                 if (isCargoObject(json)) {
                     handleNewCargoResponse(parseResponseCargo(json));
@@ -59,11 +59,16 @@ public class SeaTradeAPI extends Thread implements Closeable {
 
     }
 
-    private void handleNewCargoResponse(SeaTradeResponseCargo response) {
-        controller.addNewCargo(CargoParser.parseResponse(response.CARGO()));
+    private void handleNewCargoResponse(SeaTradeResponseCargo dto) {
+        Log.log("from SeaTrade: ");
+        Log.logJson(dto);
+        controller.addNewCargo(CargoParser.parseResponse(dto.CARGO()));
     }
 
     private void handleResponse(SeaTradeResponseDTO dto) {
+        Log.log("from SeaTrade: ");
+        Log.logJson(dto);
+
         switch (dto.CMD()) {
             case error -> Log.logErr(dto.ERROR() + " | " + dto.DATA());
             case endinfo -> {

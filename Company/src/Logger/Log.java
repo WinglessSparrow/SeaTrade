@@ -1,5 +1,8 @@
 package Logger;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class Log {
 
     public static final String ANSI_RESET = "\u001B[0m";
@@ -23,6 +26,36 @@ public class Log {
 
     public static void setErrOut(Out errOut) {
         Log.errOut = errOut;
+    }
+
+    public static void logJson(Object obj) {
+        var map = new ObjectMapper();
+        try {
+            var json = map.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+            log("=============\n" + json + "\n=============");
+        } catch (JsonProcessingException e) {
+            logErr(e.toString());
+        }
+    }
+
+    public static void logJsonGreen(Object obj) {
+        var map = new ObjectMapper();
+        try {
+            var json = map.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+            logGreen("=============\n" + json + "\n=============");
+        } catch (JsonProcessingException e) {
+            logErr(e.toString());
+        }
+    }
+
+    public static void logJsonErr(Object obj) {
+        var map = new ObjectMapper();
+        try {
+            var json = map.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+            logErr("=============\n" + json + "\n=============");
+        } catch (JsonProcessingException e) {
+            logErr(e.toString());
+        }
     }
 
     public static void log(String message) {
