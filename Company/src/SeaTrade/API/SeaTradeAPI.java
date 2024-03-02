@@ -59,13 +59,13 @@ public class SeaTradeAPI extends Thread implements Closeable {
 
     }
 
-    private void handleNewCargoResponse(SeaTradeResponseCargo dto) {
+    private void handleNewCargoResponse(SeaTradeCargoDTO dto) {
         Log.log("from SeaTrade: ");
         Log.logJson(dto);
         controller.addNewCargo(CargoParser.parseResponse(dto.CARGO()));
     }
 
-    private void handleResponse(SeaTradeResponseDTO dto) {
+    private void handleResponse(SeaTradeCargoArrayDTO dto) {
         Log.log("from SeaTrade: ");
         Log.logJson(dto);
 
@@ -88,12 +88,12 @@ public class SeaTradeAPI extends Thread implements Closeable {
         return json.contains("\"CMD\":\"newCargo\"");
     }
 
-    private SeaTradeResponseCargo parseResponseCargo(String json) throws JsonProcessingException {
-        return new ObjectMapper().readValue(json, SeaTradeResponseCargo.class);
+    private SeaTradeCargoDTO parseResponseCargo(String json) throws JsonProcessingException {
+        return new ObjectMapper().readValue(json, SeaTradeCargoDTO.class);
     }
 
-    private SeaTradeResponseDTO parseResponse(String json) throws JsonProcessingException {
-        return new ObjectMapper().readValue(json, SeaTradeResponseDTO.class);
+    private SeaTradeCargoArrayDTO parseResponse(String json) throws JsonProcessingException {
+        return new ObjectMapper().readValue(json, SeaTradeCargoArrayDTO.class);
     }
 
     private String parseRequest(SeaTradeRequestDTO dto) throws JsonProcessingException {

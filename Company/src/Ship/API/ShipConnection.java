@@ -1,5 +1,6 @@
 package Ship.API;
 
+import Ship.DTO.ShipMessageType;
 import Types.Ship;
 import Logger.Log;
 import Ship.BusinessLogic.ShipController;
@@ -54,7 +55,7 @@ public class ShipConnection extends Thread implements Closeable {
 
                 if (e.toString().contains("socket is closed")) {
                     try {
-                        writer.println(parseAnswer(new CompanyResponseDTO(false, null, "500 | unexpected error occurred | please reconnect")));
+                        writer.println(parseAnswer(new CompanyResponseDTO(false, null, null, "500 | unexpected error occurred | please reconnect")));
                     } catch (IOException ex) {
                         Log.logErr(ex.toString());
                     }
@@ -73,6 +74,7 @@ public class ShipConnection extends Thread implements Closeable {
         Log.logJson(message);
 
         Ship newShipState = null;
+        String[] harbours = null;
         boolean unknownCommand = false;
 
         switch (message.type()) {
@@ -94,6 +96,8 @@ public class ShipConnection extends Thread implements Closeable {
 
             case REACHED -> newShipState = shipController.registerHarbourReached(message.id(), message.harbour());
 
+            case HARBOURS -> harbours = shipController.getHarbourNames();
+
             default -> {
                 isDone = true;
                 unknownCommand = true;
@@ -103,7 +107,13 @@ public class ShipConnection extends Thread implements Closeable {
 
         var errorMessage = (newShipState == null && unknownCommand) ? "API doesn't know: " + message.type() + " please reconnect" : "The ship ID of " + message.id() + " not contained in the DB";
 
-        return (newShipState == null) ? new CompanyResponseDTO(false, null, errorMessage) : new CompanyResponseDTO(true, newShipState, null);
+        CompanyResponseDTO resp;
+
+        if (newShipState == null && harbours == null) resp = new CompanyResponseDTO(false, null, null, errorMessage);
+        else if (newShipState != null) resp = new CompanyResponseDTO(true, newShipState, null, null);
+        else resp = new CompanyResponseDTO(true, null, harbours, null);
+
+        return resp;
 
     }
 

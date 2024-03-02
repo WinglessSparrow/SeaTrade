@@ -1,16 +1,15 @@
 package Ship.BusinessLogic;
 
-import Types.Cargo;
-import Types.Company;
+import Types.*;
 import Database.DB;
-import Types.Direction;
-import Types.Ship;
 import Logger.Log;
 import Ship.API.ShipAPI;
 
 import java.awt.*;
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class ShipController implements Closeable {
 
@@ -31,6 +30,10 @@ public class ShipController implements Closeable {
 
     public Ship getShip(int shipId) {
         return db.getShip().get(shipId);
+    }
+
+    public String[] getHarbourNames() {
+        return Arrays.stream(db.getHarbour().getAllHarbours()).map(Harbour::name).toList().toArray(new String[0]);
     }
 
     public Ship removeShip(int shipId) {
