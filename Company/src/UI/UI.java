@@ -1,7 +1,7 @@
 package UI;
 
 import Logger.Log;
-import Main.CompanyController;
+import Central.CompanyController;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;

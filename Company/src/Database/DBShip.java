@@ -1,6 +1,7 @@
 package Database;
 
 import Database.ORMapping.ShipMapping;
+import Logger.Log;
 import Types.*;
 
 import java.sql.SQLException;
@@ -71,7 +72,7 @@ public class DBShip {
     }
 
     public void add(Ship ship, int companyId) {
-        var sql = "insert into Ship (name, pos_x, pos_y, direction, company, harbour, cargo) values (?, ?, ?, ?, ?, NULL, NULL);";
+        var sql = "insert into Ship (name, pos_x, pos_y, direction, company, harbour, cargo) values (?, ?, ?, ?, ?, ?, NULL);";
 
         var con = DBConnectionSingleton.getConnection();
 
@@ -80,12 +81,13 @@ public class DBShip {
             st.setString(1, ship.name());
             st.setInt(2, ship.pos().x);
             st.setInt(3, ship.pos().y);
-            st.setString(4, ship.dir().name());
+            st.setString(4, ship.dir().toString());
             st.setInt(5, companyId);
+            st.setInt(6, ship.harbour().id());
 
             st.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            Log.log(e.toString());
         }
     }
 

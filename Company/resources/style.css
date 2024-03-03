@@ -1,142 +1,149 @@
 /* #79aeb2 #79aeb2 #ebfeff #d6fcff #d6fcff*/
 html {
-  overflow-x: hidden;
+    overflow-x: hidden;
 }
 
 body {
-  background-color: #79aeb2;
+    background-color: #79aeb2;
 
-  padding-inline: 10%;
-  padding-top: 10vh;
+    padding-inline: 10%;
+    padding-top: 10vh;
 }
 
 .grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 50px;
 
-  gap: 1rem;
+    gap: 1rem;
 
-  color: #ebfeff;
+    color: #ebfeff;
 }
 
 #interactive-map {
-  padding-inline: 15vw;
-  margin-top: 4rem;
-  margin-bottom: 4rem;
+    padding-inline: 15vw;
+    margin-top: 4rem;
+    margin-bottom: 4rem;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#interactive-map > h1 {
+    color: white;
 }
 
 #interactive-map > #map {
-  display: grid;
+    display: grid;
 
-  background-color: lightblue;
+    background-color: lightblue;
+
+    box-shadow: rgba(68, 146, 152, 0.42) 3px 3px 10px 10px;
 }
 
 #map > .cell {
-  width: 1.5vw;
+    width: 1.5vw;
 
-  grid-column: var(--x);
-  grid-row: var(--y);
+    grid-column: var(--x);
+    grid-row: var(--y);
 
-  aspect-ratio: 1/1;
+    aspect-ratio: 1/1;
 }
 
 #map > .choosable {
-  transition: 0.1s;
+    transition: 0.1s;
 }
 
 #map > .choosable:hover {
-  scale: 1.1 1.1;
-  outline: 1px solid black;
+    scale: 1.1 1.1;
+    outline: 1px solid black;
 }
 
 .cell:has(.with-tooltip) {
-  position: relative;
+    position: relative;
 }
 
 .with-tooltip > .tooltip {
-  position: absolute;
-  top: 0;
-  left: 105%;
+    position: absolute;
+    top: 0;
+    left: 105%;
 
-  width: 150px;
+    width: 150px;
 
-  text-overflow: unset;
+    text-overflow: unset;
 
-  visibility: hidden;
+    visibility: hidden;
 
-  background-color: white;
+    background-color: white;
 
-  padding: 0.2rem;
+    padding: 0.2rem;
 
-  font-size: 12px;
+    font-size: 12px;
 }
 
 .with-tooltip > .tooltip h3,
 p {
-  padding: 0;
-  margin: 0;
+    padding: 0;
+    margin: 0;
 }
 
 .with-tooltip:hover > .tooltip {
-  visibility: visible;
+    visibility: visible;
 }
 
 svg {
-  vertical-align: top;
+    vertical-align: top;
 }
 
 #controls {
-  grid-column: 1 / 3;
-  grid-row: 1;
+    grid-column: 1 / 3;
+    grid-row: 1;
 
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 
-  gap: 1rem;
+    gap: 1rem;
 
-  color: #ebfeff;
+    color: #ebfeff;
 
-  padding-inline: 1em;
+    padding-inline: 1em;
 }
 
 #log {
-  color: rgb(175, 74, 74);
-  text-align: center;
-  font-size: 1.5rem;
+    color: rgb(175, 74, 74);
+    text-align: center;
+    font-size: 1.5rem;
 }
 
 #controls > button {
-  all: unset;
+    all: unset;
 
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 
-  aspect-ratio: 1 / 1;
-  padding: 0.1em;
+    aspect-ratio: 1 / 1;
+    padding: 0.1em;
 
-  border-radius: 15%;
+    border-radius: 15%;
 
-  font-size: 2rem;
+    font-size: 2rem;
 
-  transition: 0.3s;
+    transition: 0.3s;
 }
 
 #controls > button:hover {
-  background-color: #d6fcff;
-  color: #79aeb2;
+    background-color: #d6fcff;
+    color: #79aeb2;
 }
 
 #controls > button:active {
-  background-color: #79aeb2;
-  color: #ebfeff;
+    background-color: #79aeb2;
+    color: #ebfeff;
 }
 
 #ship-table {
-  grid-column: 1 / 3;
-  grid-row: 2;
+    grid-column: 1 / 3;
+    grid-row: 2;
 }

@@ -131,28 +131,28 @@ const insertHarbour = (node, hrbr) => {
 
     const heldShips = [];
     currData.shipsData.forEach(s => {
-        if (hrbr[0] == s[5]) {
+        if (hrbr[1] == s[5]) {
             heldShips.push(s[0]);
         }
     })
 
     const heldCargos = [];
     currData.cargosData.forEach(c => {
-        if (hrbr[0] == c[1]) {
+        if (hrbr[1] == c[1]) {
             heldCargos.push(c[0]);
         }
     })
 
     const heldCargosAwait = [];
     currData.cargosData.forEach(c => {
-        if (hrbr[0] == c[2]) {
+        if (hrbr[1] == c[2]) {
             heldCargosAwait.push(c[0]);
         }
     })
 
-    const shipsTxt = `<fieldset><legend>Ships</legend>${heldShips.map(s => `<p>${s}</p>`)}</fieldset>`;
-    const cargoTxt = `<fieldset><legend>Origin Cargos</legend>${heldCargos.map(c => `<p>${c}</p>`)}</fieldset>`;
-    const cargoAwaitedTxt = `<fieldset><legend>Awaited Cargos</legend>${heldCargosAwait.map(c => `<p>${c}</p>`)}</fieldset>`;
+    const shipsTxt = `<fieldset><legend>Ships</legend>${heldShips.map(s => `<p>${s}</p>`).join("")}</fieldset>`;
+    const cargoTxt = `<fieldset><legend>Origin Cargos</legend>${heldCargos.map(c => `<p>${c}</p>`).join("")}</fieldset>`;
+    const cargoAwaitedTxt = `<fieldset><legend>Awaited Cargos</legend>${heldCargosAwait.map(c => `<p>${c}</p>`).join("")}</fieldset>`;
 
     tooltip.innerHTML = `<h3>${hrbr[1]}</h3>${shipsTxt}${cargoTxt}${cargoAwaitedTxt}`;
 

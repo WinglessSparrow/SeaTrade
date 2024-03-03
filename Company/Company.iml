@@ -30,34 +30,6 @@
         <jarDirectory url="file://D:/Users/Pavel/Downloads/mysql-connector-java-8.0.22" recursive="false" />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://D:/Users/Pavel/Downloads/jar_files/jackson-annotations-2.16.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://D:/Users/Pavel/Downloads/jar_files/jackson-core-2.16.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://D:/Users/Pavel/Downloads/jar_files/jackson-databind-2.16.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="library" name="fasterxml.jackson.core" level="project" />
     <orderEntry type="library" name="fasterxml.jackson.core.databind" level="project" />
   </component>
 </module>

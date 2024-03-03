@@ -33,6 +33,7 @@ public class ShipController implements Closeable {
     }
 
     public String[] getHarbourNames() {
+        var f = Arrays.stream(db.getHarbour().getAllHarbours()).map(Harbour::name).toList().toArray(new String[0]);
         return Arrays.stream(db.getHarbour().getAllHarbours()).map(Harbour::name).toList().toArray(new String[0]);
     }
 
@@ -49,22 +50,23 @@ public class ShipController implements Closeable {
     public Ship addNewShip(Ship ship) {
 
         var company = db.getCompany().get();
+        var harbour = db.getHarbour().getByName(ship.harbour().name());
 
         synchronized (this) {
-            db.getShip().add(ship, company.id());
+            db.getShip().add(new Ship(ship, harbour), company.id());
         }
 
         return db.getShip().getByName(ship.name());
     }
 
-    public Ship moveShip(int shipId, Point point, Direction dir, int cost) {
+    public Ship moveShip(int shipId, Point point, Direction dir, String harbour, int cost) {
         final var company = db.getCompany().get();
-        final var ship = db.getShip().get(shipId);
+        final var ship = new Ship(db.getShip().get(shipId), point, dir);
 
         synchronized (this) {
             db.startTransaction();
 
-            db.getShip().update(new Ship(ship, point, dir));
+            db.getShip().update(!ship.harbour().name().equals(harbour) ? new Ship(ship, db.getHarbour().getByName(harbour)) : ship);
 
             db.getCompany().update(new Company(company, company.deposit() - cost));
 

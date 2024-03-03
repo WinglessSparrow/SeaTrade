@@ -1,6 +1,7 @@
 package Ship.API;
 
 import Ship.DTO.ShipMessageType;
+import Types.Harbour;
 import Types.Ship;
 import Logger.Log;
 import Ship.BusinessLogic.ShipController;
@@ -81,14 +82,14 @@ public class ShipConnection extends Thread implements Closeable {
             case UPDATE -> newShipState = shipController.getShip(message.id());
 
             case MOVE ->
-                    newShipState = shipController.moveShip(message.id(), message.point(), message.direction(), message.cost());
+                    newShipState = shipController.moveShip(message.id(), message.point(), message.direction(), message.harbour(), message.cost());
 
             case REMOVE -> {
                 newShipState = shipController.removeShip(message.id());
                 isDone = false;
             }
             case ADD ->
-                    newShipState = shipController.addNewShip(new Ship(message.name(), message.id(), message.point(), message.direction(), null, null));
+                    newShipState = shipController.addNewShip(new Ship(message.name(), -1, message.point(), message.direction(), new Harbour(-1, message.harbour(), null), null));
 
             case LOAD -> newShipState = shipController.registerCargoLoad(message.id(), message.cargoId());
 

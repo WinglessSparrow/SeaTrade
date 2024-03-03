@@ -1,4 +1,4 @@
-package Main;
+package Central;
 
 import Database.DB;
 import SeaTrade.BusinessLogic.SeaTradeController;
