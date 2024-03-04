@@ -6,6 +6,8 @@ import java.net.UnknownHostException;
 
 import API.CompanyAPI;
 import API.ShipController;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Ship {
 
@@ -86,6 +88,13 @@ public class Ship {
 
     }
 
+    public void printShip() {
+        try {
+            System.out.println(new ObjectMapper().writeValueAsString(this));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public ShipController getController() {
         return controller;

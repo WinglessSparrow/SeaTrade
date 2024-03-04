@@ -9,7 +9,6 @@ import java.awt.*;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public class ShipController implements Closeable {
 
@@ -66,7 +65,9 @@ public class ShipController implements Closeable {
         synchronized (this) {
             db.startTransaction();
 
-            db.getShip().update(!ship.harbour().name().equals(harbour) ? new Ship(ship, db.getHarbour().getByName(harbour)) : ship);
+            if (ship.harbour() != null && !ship.harbour().name().equals(harbour))
+                db.getShip().update(new Ship(ship, db.getHarbour().getByName(harbour)));
+            else db.getShip().update(ship);
 
             db.getCompany().update(new Company(company, company.deposit() - cost));
 
@@ -96,6 +97,7 @@ public class ShipController implements Closeable {
 
             db.getShip().update(new Ship(currShip, (Cargo) null));
             db.getCompany().update(new Company(company, company.deposit() + profit));
+            db.getCargo().delete(currShip.heldCargo().id());
 
             db.commitTransaction();
         }

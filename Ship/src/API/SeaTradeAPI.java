@@ -1,16 +1,11 @@
 package API;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.Reader;
+import java.io.*;
 import java.awt.Point;
-import java.io.BufferedReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,7 +16,7 @@ import DataClasses.Cargo;
 import DataClasses.Direction;
 import DataClasses.Harbour;
 
-public class SeaTradeAPI {
+public class SeaTradeAPI implements Closeable {
 
     Socket socket = null;
     PrintWriter writer = null;
@@ -30,19 +25,26 @@ public class SeaTradeAPI {
     ShipController controller = null;
     ResponseListener responseListener = null;
 
+    @Override
+    public void close() throws IOException {
+        responseListener.interrupt();
+        socket.close();
+    }
+
     class ResponseListener extends Thread {
 
         public void run() {
             while (!isInterrupted()) {
                 try {
                     String json = reader.readLine();
-                    var mapper = new ObjectMapper();
-                    var response = mapper.readValue(json, SeaTradeResponseDTO.class);
-                    parseResponse(response);
-
+                    if (json != null) {
+                        var mapper = new ObjectMapper();
+                        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+                        var response = mapper.readValue(json, SeaTradeResponseDTO.class);
+                        parseResponse(response);
+                    }
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    System.out.println("SeaTrade socket closed");
                 }
             }
         }
@@ -87,7 +89,14 @@ public class SeaTradeAPI {
     }
 
     public void exit() {
+        JSONObject json = parser.parseToJSON("CMD", "exit");
+        writer.println(json);
 
+        try {
+            controller.getCompanyApi().notifyExit(controller.getShip().getId());
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void moveTo(String harbourName) {
@@ -109,7 +118,7 @@ public class SeaTradeAPI {
                 controller.onMoved(response.POSITION().DIRECTION(), pos2, response.COST());
                 break;
             case reached:
-                controller.onReached(response.HARBOUR());
+                controller.onReached(response.NAME());
                 break;
             case loaded:
                 controller.onLoad(response.CARGO().ID());

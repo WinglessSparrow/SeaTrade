@@ -58,6 +58,22 @@ public class DBCargo {
         }
     }
 
+    public void delete(int id) {
+        var sql = "delete from cargo where id = ?;";
+
+        var con = DBConnectionSingleton.getConnection();
+
+        try {
+            var st = con.prepareStatement(sql);
+
+            st.setInt(1, id);
+
+            st.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void addBulk(Cargo[] cargos) {
         var sql = "insert into Cargo values(?, ?, ?, ?);";
 

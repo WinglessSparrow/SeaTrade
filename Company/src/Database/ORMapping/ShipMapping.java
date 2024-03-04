@@ -27,6 +27,7 @@ public class ShipMapping {
         Harbour currHarbour = (result.getString(cols[HARBOUR_NAME]) != null) ? HarbourMapping.mapHarbour(result, Arrays.copyOfRange(cols, HARBOUR_ID, HARBOUR_Y + 1)) : null;
 
         var pos = new Point(result.getInt(cols[POS_X]), result.getInt(cols[POS_Y]));
+
         var dir = Direction.valueOf(result.getString(cols[DIRECTION]));
 
         return new Ship(result.getString(cols[NAME]), result.getInt(cols[ID]), pos, dir, currHarbour, cargo);

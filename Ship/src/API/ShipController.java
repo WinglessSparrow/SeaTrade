@@ -1,6 +1,8 @@
 package API;
 
 import java.awt.Point;
+import java.io.Closeable;
+import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -8,10 +10,12 @@ import DataClasses.Direction;
 import DataClasses.Harbour;
 import DataClasses.Ship;
 
-public class ShipController {
+public class ShipController implements Closeable {
 
     private CompanyAPI company = null;
     private Ship ship = null;
+
+    private String[] harbours = new String[0];
 
     private final SeaTradeAPI api;
 
@@ -32,6 +36,7 @@ public class ShipController {
     }
 
     public void onReached(String harbourName) throws JsonProcessingException {
+        System.out.println("Reached: " + harbourName);
         company.notifyReached(ship.getId(), harbourName);
     }
 
@@ -66,39 +71,53 @@ public class ShipController {
     }
 
     public void launch(Harbour harbour, String name, String companyName) {
-
         api.launch(harbour, name, companyName);
-
     }
 
     public void load() {
-
         api.load();
-
     }
 
     public void unload() {
-
         api.unload();
-
     }
 
     public void exit() {
-
         api.exit();
-
     }
 
     public void moveTo(String harbourName) {
-
         api.moveTo(harbourName);
-
     }
 
 
-    public void getHarbours() {
-
-
+    public void updateHarbours() {
+        try {
+            company.getHarbours();
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
+    public void setHarbours(String[] harbours) {
+        this.harbours = harbours;
+    }
+
+    public String[] getHarbours() {
+        return harbours;
+    }
+
+    public Ship getShip() {
+        return ship;
+    }
+
+    public CompanyAPI getCompanyApi() {
+        return company;
+    }
+
+    @Override
+    public void close() throws IOException {
+        api.close();
+        company.close();
+    }
 }

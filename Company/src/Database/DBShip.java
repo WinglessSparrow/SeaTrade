@@ -4,7 +4,9 @@ import Database.ORMapping.ShipMapping;
 import Logger.Log;
 import Types.*;
 
+import java.lang.reflect.Type;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 
 public class DBShip {
@@ -13,7 +15,7 @@ public class DBShip {
             select S.name      as name,
                    S.id        as id,
                    S.pos_x     as pos_x,
-                   S.pos_x     as pos_y,
+                   S.pos_y     as pos_y,
                    S.direction as direction,
                    C.id        as cargo_id,
                    C.value     as cargo_value,
@@ -57,9 +59,16 @@ public class DBShip {
 
         try {
             var st = con.prepareStatement(sql);
+
             st.setString(1, ship.dir().toString());
-            st.setInt(2, ship.heldCargo().id());
-            st.setInt(3, ship.harbour().id());
+
+            if (ship.heldCargo() == null) st.setNull(2, Types.INTEGER);
+            else st.setInt(2, ship.heldCargo().id());
+
+
+            if (ship.harbour() == null) st.setNull(3, Types.INTEGER);
+            else st.setInt(3, ship.harbour().id());
+
             st.setInt(4, ship.pos().x);
             st.setInt(5, ship.pos().y);
 

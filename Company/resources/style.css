@@ -1,4 +1,4 @@
-/* #79aeb2 #79aeb2 #ebfeff #d6fcff #d6fcff*/
+/* #79aeb2 #ebfeff #d6fcff #d6fcff*/
 html {
     overflow-x: hidden;
 }
@@ -8,12 +8,12 @@ body {
 
     padding-inline: 10%;
     padding-top: 10vh;
+    padding-bottom: 10vh;
 }
 
 .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 50px;
 
     gap: 1rem;
 
@@ -101,14 +101,22 @@ svg {
     grid-column: 1 / 3;
     grid-row: 1;
 
-    display: flex;
-    align-items: center;
-
-    gap: 1rem;
+    display: grid;
+    grid-template-columns: 90% 10%;
+    grid-template-rows: 1fr 1fr 1fr;
 
     color: #ebfeff;
 
+    width: 400px;
+    min-height: 100px;
+
     padding-inline: 1em;
+
+    background-color: #60a6ab;
+
+    box-shadow: rgba(60, 127, 129, 0.39) 5px 5px 10px 5px;
+
+    padding: 1rem;
 }
 
 #log {
@@ -118,10 +126,14 @@ svg {
 }
 
 #controls > button {
+    grid-column: 2/3;
+    grid-row: 4/5;
+
     all: unset;
 
     display: flex;
     align-items: center;
+    justify-content: center;
 
     aspect-ratio: 1 / 1;
     padding: 0.1em;

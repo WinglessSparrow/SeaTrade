@@ -12,28 +12,29 @@ public class ShipStarter {
 
         Ship ship = new Ship();
         Scanner sc = new Scanner(System.in);
-//        System.out.println("SeaTrade-Port eingeben: ");
-//        int sPort = Integer.parseInt(sc.nextLine());
-//        System.out.println("SeaTrade-Host eingeben: ");
-//        String sHost = sc.nextLine();
-//        System.out.println("Company-Port eingeben: ");
-//        int cPort = Integer.parseInt(sc.nextLine());
-//        System.out.println("Company-Host eingeben: ");
-//        String cHost = sc.nextLine();
-//        System.out.println("Harbour: ");
-//        String harbourName = sc.nextLine();
-//        Harbour harbour = new Harbour(-1, harbourName, null);
-//        System.out.println("Ship Name: ");
-//        String name = sc.nextLine();
-        int cPort = 8080;
-        int sPort = 8000;
-        String cHost = "localhost";
-        String sHost = "localhost";
-
-        var harbour = new Harbour();
-        harbour.setName("halifax");
-
-        String name = "titanic";
+        System.out.println("SeaTrade-Port eingeben: ");
+        int sPort = Integer.parseInt(sc.nextLine());
+        System.out.println("SeaTrade-Host eingeben: ");
+        String sHost = sc.nextLine();
+        System.out.println("Company-Port eingeben: ");
+        int cPort = Integer.parseInt(sc.nextLine());
+        System.out.println("Company-Host eingeben: ");
+        String cHost = sc.nextLine();
+        System.out.println("Harbour: ");
+        String harbourName = sc.nextLine();
+        Harbour harbour = new Harbour();
+        harbour.setName(harbourName);
+        System.out.println("Ship Name: ");
+        String name = sc.nextLine();
+//        int cPort = 8080;
+//        int sPort = 8000;
+//        String cHost = "localhost";
+//        String sHost = "localhost";
+//
+//        var harbour = new Harbour();
+//        harbour.setName("halifax");
+//
+//        String name = "titanic";
         System.out.println("Company Name: ");
         String company = sc.nextLine();
 
@@ -45,39 +46,47 @@ public class ShipStarter {
         ship.setHarbour(harbour);
 
         controller.launch(harbour, name, company);
+        controller.updateHarbours();
 
+        boolean running = true;
 
-        System.out.println("Anfrage wurde an Server gesendet.");
-
-        System.out.println("Commands: getHarbours | moveTo | load | unload | exit");
-
-        while (true) {
-
+        while (running) {
+            System.out.println("Commands: harbours | moveTo | load | unload | exit");
             String input = sc.nextLine();
 
             switch (input) {
 
-                case "getHarbours":
-                    controller.getHarbours();
-                    System.out.println("Anfrage wurde an Server gesendet.");
+                case "harbours":
+                    controller.updateHarbours();
+                    for (var h : controller.getHarbours()) {
+                        System.out.println(h);
+                    }
                     break;
                 case "moveTo":
-                    System.out.println("Harbour: ");
+                    for (var h : controller.getHarbours()) {
+                        if (controller.getShip().getHeldCargo() != null && h.equals(controller.getShip().getHeldCargo().getDest().getName())) {
+                            System.out.println("\033[0;33m" + h + " < cargo destination \033[0m");
+                        } else {
+                            System.out.println(h);
+                        }
+                    }
+                    System.out.println("Choose Destination Harbour: ");
                     String harbourMove = sc.nextLine();
+
+                    controller.getShip().setHarbour(null);
+
                     controller.moveTo(harbourMove);
-                    System.out.println("Anfrage wurde an Server gesendet.");
+
                     break;
                 case "load":
                     controller.load();
-                    System.out.println("Anfrage wurde an Server gesendet.");
                     break;
                 case "unload":
                     controller.unload();
-                    System.out.println("Anfrage wurde an Server gesendet.");
                     break;
                 case "exit":
                     controller.exit();
-                    System.out.println("Anfrage wurde an Server gesendet.");
+                    running = false;
                     break;
                 default:
                     System.out.println("Command fehlerhaft.");
@@ -85,8 +94,21 @@ public class ShipStarter {
 
             }
 
+            while (controller.getShip().getHarbour() == null) {
+                try {
+                    System.out.print(".");
+
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
         }
 
+        controller.close();
+
+        System.exit(0);
     }
 
 }

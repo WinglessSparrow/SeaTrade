@@ -24,9 +24,19 @@ async function getData() {
             currData = data;
 
             if (!data.company) {
-                document.querySelector("#company-name").innerHTML = "Company Is Null";
+                const name = `<h2 style="grid-column: 1/2; grid-row: 1;">Company is null</h2>`;
+                const deposit = `<h3 style="grid-column: 1/2; grid-row: 2;"><i class="ti ti-pig-money"></i> Deposit: -1</h3>`
+                const id = `<h3 style="grid-column: 1/2; grid-row: 3;"><i class="ti ti-hash"></i> ID: -1<h3>`;
+                const button = `<button style="grid-column: 2/3; grid-row: 1;" onclick="getData()"><i class="ti ti-refresh"></i></button>`
+
+                document.querySelector("#controls").innerHTML = name + deposit + id + button;
             } else {
-                document.querySelector("#company-name").innerHTML = data.company.name;
+                const name = `<h2 style="grid-column: 1/2; grid-row: 1;">${data.company.name}</h2>`;
+                const deposit = `<h3 style="grid-column: 1/2; grid-row: 2;"><i class="ti ti-pig-money"></i> Deposit: ${data.company.deposit}</h3>`
+                const id = `<h3 style="grid-column: 1/2; grid-row: 3;"><i class="ti ti-hash"></i> ID: ${data.company.id}</h3>`;
+                const button = `<button style="grid-column: 2/3; grid-row: 1;" onclick="getData()"><i class="ti ti-refresh"></i></button>`
+
+                document.querySelector("#controls").innerHTML = name + deposit + id + button;
             }
 
             const config = {
@@ -69,6 +79,8 @@ async function getData() {
 
 const render = () => {
     const map = document.querySelector("#interactive-map > #map");
+
+    map.innerHTML = "";
 
     if (currData != null) {
         for (let x = 0; x < currData.company.mapSize.width; x++) {
@@ -161,4 +173,4 @@ const insertHarbour = (node, hrbr) => {
 
 getData();
 
-setInterval(getData, 5000);
+setInterval(getData, 2000);
