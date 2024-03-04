@@ -61,6 +61,10 @@ public class ShipController {
         return api;
     }
 
+    public void setShip(Ship ship) {
+        this.ship = ship;
+    }
+
     public void launch(Harbour harbour, String name, String companyName) {
 
         api.launch(harbour, name, companyName);

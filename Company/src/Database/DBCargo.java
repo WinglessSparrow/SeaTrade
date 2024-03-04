@@ -102,6 +102,8 @@ public class DBCargo {
 
             var result = st.getResultSet();
 
+            result.next();
+
             cargo = CargoMapping.mapCargo(result, null);
         } catch (SQLException e) {
             throw new RuntimeException(e);

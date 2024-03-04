@@ -121,9 +121,12 @@ public class CompanyAPI {
             return;
         }
 
-        if (response.success() == true) {
+        if (response.success()) {
 
-            //TODO
+            if (response.ship() != null) {
+                controller.setShip(response.ship());
+            }
+
 
         }
 
