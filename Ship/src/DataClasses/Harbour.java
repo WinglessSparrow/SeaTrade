@@ -4,25 +4,30 @@ import java.awt.Point;
 
 public class Harbour {
     private int id = 0;
-    private String name = null;
+    private String name = "";
     private Point pos = null;
 
-    public Harbour(int id, String name, Point pos) {
-        this.id = id;
-        this.name = name;
-        this.pos = pos;
-    }
-
-
-    public void setId(int id) {
-        this.id = id;
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
+    public Point getPos() {
+        return pos;
+    }
+
     public void setPos(Point pos) {
         this.pos = pos;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

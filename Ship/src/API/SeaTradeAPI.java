@@ -67,21 +67,22 @@ public class SeaTradeAPI {
     }
 
     public void launch(Harbour harbour, String name, String companyName) {
-        JSONObject json = parser.parseToJSON("CMD", "launch");
-        writer.print(json);
+        JSONObject json = parser.parseToJSON("CMD", "launch", "COMPANY", companyName, "HARBOUR", harbour.getName(), "SHIPNAME", name);
+
+        writer.println(json);
     }
 
     public void load() {
 
         JSONObject json = parser.parseToJSON("CMD", "loadcargo");
-        writer.print(json);
+        writer.println(json);
 
     }
 
     public void unload() {
 
         JSONObject json = parser.parseToJSON("CMD", "unloadcargo");
-        writer.print(json);
+        writer.println(json);
 
     }
 
@@ -92,7 +93,7 @@ public class SeaTradeAPI {
     public void moveTo(String harbourName) {
 
         JSONObject json = parser.parseToJSON("CMD", "moveto", "NAME", harbourName);
-        writer.print(json);
+        writer.println(json);
 
     }
 
@@ -101,11 +102,11 @@ public class SeaTradeAPI {
         switch (response.CMD()) {
             case launched:
                 Point pos1 = new Point(response.POSITION().X(), response.POSITION().Y());
-                controller.onLaunch(response.POSITION().dir(), pos1, response.COST());
+                controller.onLaunch(response.POSITION().DIRECTION(), pos1, response.COST());
                 break;
             case moved:
                 Point pos2 = new Point(response.POSITION().X(), response.POSITION().Y());
-                controller.onMoved(response.POSITION().dir(), pos2, response.COST());
+                controller.onMoved(response.POSITION().DIRECTION(), pos2, response.COST());
                 break;
             case reached:
                 controller.onReached(response.HARBOUR());

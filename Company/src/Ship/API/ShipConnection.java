@@ -21,6 +21,7 @@ public class ShipConnection extends Thread implements Closeable {
     private final ShipController shipController;
     private boolean isDone = false;
 
+    private int shipId;
 
     public ShipConnection(Socket socket, ShipController shipController) {
         this.socket = socket;
@@ -64,6 +65,8 @@ public class ShipConnection extends Thread implements Closeable {
             }
         }
 
+        shipController.removeShip(shipId);
+
         Log.log("Ship removed, bye bye");
 
         close();
@@ -77,6 +80,8 @@ public class ShipConnection extends Thread implements Closeable {
         Ship newShipState = null;
         String[] harbours = null;
         boolean unknownCommand = false;
+
+        shipId = message.id();
 
         switch (message.type()) {
             case UPDATE -> newShipState = shipController.getShip(message.id());

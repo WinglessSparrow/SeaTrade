@@ -43,7 +43,7 @@ public class SeaTradeAPI {
 
     }
 
-    public SeaTradeAPI(ShipController controller, String host, int port) throws UnknownHostException, IOException {
+    public SeaTradeAPI(ShipController controller, int port, String host) throws UnknownHostException, IOException {
 
         socket = new Socket(host, port);
         OutputStream outStream = socket.getOutputStream();
@@ -91,11 +91,11 @@ public class SeaTradeAPI {
         switch (response.CMD()) {
             case launched:
                 Point pos1 = new Point(response.POSITION().X(), response.POSITION().Y());
-                controller.onLaunch(response.POSITION().dir(), pos1, response.COST());
+                controller.onLaunch(response.POSITION().DIRECTION(), pos1, response.COST());
                 break;
             case moved:
                 Point pos2 = new Point(response.POSITION().X(), response.POSITION().Y());
-                controller.onMoved(response.POSITION().dir(), pos2, response.COST());
+                controller.onMoved(response.POSITION().DIRECTION(), pos2, response.COST());
                 break;
             case reached:
                 controller.onReached(response.HARBOUR());

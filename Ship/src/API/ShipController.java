@@ -24,7 +24,7 @@ public class ShipController {
 
     public void onLaunch(Direction dir, Point pos, int cost) throws JsonProcessingException {
 
-        company.notifyLaunch(ship.getName(), pos, dir, cost);
+        company.notifyLaunch(ship.getName(), pos, dir, cost, ship.getHarbour().getName());
     }
 
     public void onMoved(Direction dir, Point pos, int cost) throws JsonProcessingException {
@@ -49,15 +49,52 @@ public class ShipController {
 
     public void updateShip(Ship ship) {
 
-        this.ship.set(ship.getId());
-        this.ship.set(ship.getName());
-        this.ship.set(ship.getPos(), ship.getDir());
-        this.ship.set(ship.getHarbour());
-        this.ship.set(ship.getCargo());
+        this.ship.setId(ship.getId());
+        this.ship.setName(ship.getName());
+        this.ship.setPosDirection(ship.getPos(), ship.getDir());
+        this.ship.setHarbour(ship.getHarbour());
+        this.ship.setHeldCargo(ship.getHeldCargo());
 
     }
 
     public SeaTradeAPI getApi() {
         return api;
     }
+
+    public void launch(Harbour harbour, String name, String companyName) {
+
+        api.launch(harbour, name, companyName);
+
+    }
+
+    public void load() {
+
+        api.load();
+
+    }
+
+    public void unload() {
+
+        api.unload();
+
+    }
+
+    public void exit() {
+
+        api.exit();
+
+    }
+
+    public void moveTo(String harbourName) {
+
+        api.moveTo(harbourName);
+
+    }
+
+
+    public void getHarbours() {
+
+
+    }
+
 }

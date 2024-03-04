@@ -2,5 +2,5 @@ package DTO;
 
 import DataClasses.Direction;
 
-public record PositionDTO(Direction dir,int X, int Y) {
+public record PositionDTO(Direction DIRECTION, int X, int Y) {
 }

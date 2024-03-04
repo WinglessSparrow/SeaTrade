@@ -26,63 +26,66 @@ public class Ship {
 
     }
 
-    public Ship get() {
-        return this;
-    }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Point getPos() {
         return pos;
+    }
+
+    public void setPos(Point pos) {
+        this.pos = pos;
     }
 
     public Direction getDir() {
         return dir;
     }
 
+    public void setDir(Direction dir) {
+        this.dir = dir;
+    }
+
     public Harbour getHarbour() {
         return harbour;
     }
 
-    public Cargo getCargo() {
+    public void setHarbour(Harbour harbour) {
+        this.harbour = harbour;
+    }
+
+    public Cargo getHeldCargo() {
         return heldCargo;
     }
 
-    public void set(int id) {
-
-        this.id = id;
-
+    public void setHeldCargo(Cargo heldCargo) {
+        this.heldCargo = heldCargo;
     }
 
-    public void set(String name) {
-
-        this.name = name;
-
+    public void setController(ShipController controller) {
+        this.controller = controller;
     }
 
-    public void set(Point pos, Direction dir) {
+    public void setPosDirection(Point pos, Direction dir) {
 
         this.pos = pos;
         this.dir = dir;
 
     }
 
-    public void set(Harbour harbour) {
-
-        this.harbour = harbour;
-
-    }
-
-    public void set(Cargo heldCargo) {
-
-        this.heldCargo = heldCargo;
-    }
 
     public ShipController getController() {
         return controller;

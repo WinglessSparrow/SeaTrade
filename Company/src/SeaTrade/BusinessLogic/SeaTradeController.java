@@ -9,6 +9,7 @@ import SeaTrade.API.SeaTradeAPI;
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.Arrays;
 
 public class SeaTradeController implements Closeable {
     private final DB db;
@@ -40,7 +41,9 @@ public class SeaTradeController implements Closeable {
     }
 
     public synchronized void setCargos(Cargo[] cargos) {
-        db.getCargo().addBulk(cargos);
+        var cargoWithIds = Arrays.stream(cargos).map(c -> new Cargo(db.getHarbour().getByName(c.dest().name()), db.getHarbour().getByName(c.src().name()), c)).toList().toArray(new Cargo[0]);
+
+        db.getCargo().addBulk(cargoWithIds);
     }
 
     public synchronized void setHarbours(Harbour[] harbours) {

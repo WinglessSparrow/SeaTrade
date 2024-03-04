@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import DataClasses.Harbour;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -60,45 +61,51 @@ public class CompanyAPI {
 
     }
 
-    public void notifyLaunch(String name, Point pos, Direction dir, int cost) throws JsonProcessingException {
+    public void notifyLaunch(String name, Point pos, Direction dir, int cost, String harbour) throws JsonProcessingException {
 
-        var ms = new ShipMessageDTO(ShipMessageType.ADD, 0, name, pos, dir, null, null, cost);
-        writer.write(new ObjectMapper().writeValueAsString(ms));
+        var ms = new ShipMessageDTO(ShipMessageType.ADD, 0, name, pos, dir, harbour, null, cost);
+        writer.println(new ObjectMapper().writeValueAsString(ms));
 
     }
 
     public void notifyMoved(int id, Point pos, Direction dir, int cost) throws JsonProcessingException {
 
         var ms = new ShipMessageDTO(ShipMessageType.MOVE, id, null, pos, dir, null, null, cost);
-        writer.write(new ObjectMapper().writeValueAsString(ms));
+        writer.println(new ObjectMapper().writeValueAsString(ms));
 
     }
 
     public void notifyReached(int id, String harbour) throws JsonProcessingException {
 
         var ms = new ShipMessageDTO(ShipMessageType.REACHED, id, null, null, null, harbour, null, null);
-        writer.write(new ObjectMapper().writeValueAsString(ms));
+        writer.println(new ObjectMapper().writeValueAsString(ms));
 
     }
 
     public void notifyLoad(int id, int cargoId) throws JsonProcessingException {
 
         var ms = new ShipMessageDTO(ShipMessageType.LOAD, id, null, null, null, null, cargoId, null);
-        writer.write(new ObjectMapper().writeValueAsString(ms));
+        writer.println(new ObjectMapper().writeValueAsString(ms));
 
     }
 
     public void notifyUnload(int id, int cost) throws JsonProcessingException {
 
         var ms = new ShipMessageDTO(ShipMessageType.UNLOAD, id, null, null, null, null, null, cost);
-        writer.write(new ObjectMapper().writeValueAsString(ms));
+        writer.println(new ObjectMapper().writeValueAsString(ms));
 
     }
 
     public void notifyExit(int id) throws JsonProcessingException {
 
         var ms = new ShipMessageDTO(ShipMessageType.REMOVE, id, null, null, null, null, null, null);
-        writer.write(new ObjectMapper().writeValueAsString(ms));
+        writer.println(new ObjectMapper().writeValueAsString(ms));
+
+    }
+
+    public void notifyGetHarbours() {
+
+        //TODO
 
     }
 
@@ -116,6 +123,7 @@ public class CompanyAPI {
 
         if (response.success() == true) {
 
+            //TODO
 
         }
 
