@@ -67,7 +67,7 @@ public class ShipConnection extends Thread implements Closeable {
 
         shipController.removeShip(shipId);
 
-        Log.log("Ship removed, bye bye");
+        Log.logGreen("Ship - " + shipId + ", has exited, bye bye");
 
         close();
     }
@@ -91,7 +91,7 @@ public class ShipConnection extends Thread implements Closeable {
 
             case REMOVE -> {
                 newShipState = shipController.removeShip(message.id());
-                isDone = false;
+                isDone = true;
             }
             case ADD ->
                     newShipState = shipController.addNewShip(new Ship(message.name(), -1, message.point(), message.direction(), new Harbour(-1, message.harbour(), null), null));

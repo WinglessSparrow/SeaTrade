@@ -59,7 +59,7 @@ public class DBCargo {
     }
 
     public void delete(int id) {
-        var sql = "delete from cargo where id = ?;";
+        var sql = "delete from Cargo where id = ?;";
 
         var con = DBConnectionSingleton.getConnection();
 
